@@ -1099,10 +1099,10 @@ if ( 'object' === typeof wpcom_mobile_user_agent_info ) {
                     window.addEventListener('load', function() {
                     var codeGenMetadata = {
                         // todo: put form id here
-                        formPropertyId: 3,
-                        formSelector: '[method*="post"]',
+                        formPropertyId: 2,
+                        formSelector: '[class*="contact-form commentsblock wp-block-jetpack-contact-form"]',
                         subjectIdentifiers: [{"name":"Name(required)","selector":"[name = \"g18-name\"]","isPrimary":false},{"name":"Email(required)","selector":"[name = \"g18-email\"]","isPrimary":true}],
-                        consentIdentifiers: [{"type":"checkbox","name":"g18-iagreetobecontactedviabelowchannels[]","selector":"[value = \"Phone Calls\"]","propertyId":20,"consentValue":"checked"},{"type":"checkbox","name":"g18-iagreetobecontactedviabelowchannels[]","selector":"[value = \"Email\"]","propertyId":21,"consentValue":"checked"},{"type":"checkbox","name":"g18-iagreetobecontactedviabelowchannels[]","selector":"[value = \"SMS\"]","propertyId":22,"consentValue":"checked"}],
+                        consentIdentifiers: [{"type":"checkbox","name":"g18-iagreetobecontactedviabelowchannels[]","selector":"[value = \"Phone Calls\"]","propertyId":482,"consentValue":"checked"},{"type":"checkbox","name":"g18-iagreetobecontactedviabelowchannels[]","selector":"[value = \"Email\"]","propertyId":483,"consentValue":"checked"},{"type":"checkbox","name":"g18-iagreetobecontactedviabelowchannels[]","selector":"[value = \"SMS\"]","propertyId":484,"consentValue":"checked"}],
                         consentTrigger: {
                             action: 'click',
                             selector: '[data-id-attr = "placeholder"]'
@@ -1220,7 +1220,7 @@ if ( 'object' === typeof wpcom_mobile_user_agent_info ) {
                         var xhr = new XMLHttpRequest();
                         xhr.open('POST', 'https://app.securiti.ai/privaci/v1/consent/form/singleupload', false);
                         xhr.setRequestHeader('Content-type', 'application/json');
-                        xhr.setRequestHeader('X-Auth-Token', '43ce8110-3ec5-4243-a67f-01fda05054c8');
+                        xhr.setRequestHeader('X-Auth-Token', 'fd5e690f-8d6c-4c12-a76d-fe2b7285caab');
                         xhr.setRequestHeader('X-ORG-ID', '1');
 
                         xhr.onload = function () {
