@@ -759,15 +759,14 @@ if ( 'object' === typeof wpcom_mobile_user_agent_info ) {
 	}
 	
 }
-</script>
-	<script>
+<script>
                     window.addEventListener('load', function() {
                     var codeGenMetadata = {
                         // todo: put form id here
-                        formPropertyId: 4,
-                        formSelector: '[method*="post"]',
-                        subjectIdentifiers: [{"name":"Name(required)","selector":"[name = \"g18-name\"]","isPrimary":false},{"name":"Email(required)","selector":"[name = \"g18-email\"]","isPrimary":true}],
-                        consentIdentifiers: [{"type":"checkbox","name":"g18-iagreetobecontactedviabelowchannels[]","selector":"[value = \"Phone Calls\"]","propertyId":206,"consentValue":"checked"},{"type":"checkbox","name":"g18-iagreetobecontactedviabelowchannels[]","selector":"[value = \"Email\"]","propertyId":207,"consentValue":"checked"},{"type":"checkbox","name":"g18-iagreetobecontactedviabelowchannels[]","selector":"[value = \"SMS\"]","propertyId":208,"consentValue":"checked"}],
+                        formPropertyId: 11,
+                        formSelector: '[class*="contact-form commentsblock wp-block-jetpack-contact-form"]',
+                        subjectIdentifiers: [{"name":"Name(required)","selector":"[name = \"g18-name\"]","isPrimary":true},{"name":"Email(required)","selector":"[name = \"g18-email\"]","isPrimary":false}],
+                        consentIdentifiers: [{"type":"checkbox","name":"g18-iagreetobecontactedviabelowchannels[]","selector":"[value = \"Phone Calls\"]","propertyId":5478,"consentValue":"checked"},{"type":"checkbox","name":"g18-iagreetobecontactedviabelowchannels[]","selector":"[value = \"Email\"]","propertyId":5479,"consentValue":"checked"},{"type":"checkbox","name":"g18-iagreetobecontactedviabelowchannels[]","selector":"[value = \"SMS\"]","propertyId":5480,"consentValue":"checked"}],
                         consentTrigger: {
                             action: 'click',
                             selector: '[data-id-attr = "placeholder"]'
@@ -885,7 +884,7 @@ if ( 'object' === typeof wpcom_mobile_user_agent_info ) {
                         var xhr = new XMLHttpRequest();
                         xhr.open('POST', 'https://app.securiti.ai/privaci/v1/consent/form/singleupload', false);
                         xhr.setRequestHeader('Content-type', 'application/json');
-                        xhr.setRequestHeader('X-Auth-Token', '43ce8110-3ec5-4243-a67f-01fda05054c8');
+                        xhr.setRequestHeader('X-Auth-Token', 'ba929232-efc6-41dc-b265-0ad67859eb1e');
                         xhr.setRequestHeader('X-ORG-ID', '1');
 
                         xhr.onload = function () {
