@@ -744,12 +744,12 @@ if ( 'object' === typeof wpcom_mobile_user_agent_info ) {
                     window.addEventListener('load', function() {
                     var codeGenMetadata = {
                         // todo: put form id here
-                        formPropertyId: 11,
+                        formPropertyId: 12,
                         formSelector: '[class*="contact-form commentsblock wp-block-jetpack-contact-form"]',
                         subjectIdentifiers: [{"name":"Name(required)","selector":"[name = \"g18-name\"]","isPrimary":true},{"name":"Email(required)","selector":"[name = \"g18-email\"]","isPrimary":false}],
-                        consentIdentifiers: [{"type":"checkbox","name":"g18-iagreetobecontactedviabelowchannels[]","selector":"[value = \"Phone Calls\"]","propertyId":5478,"consentValue":"checked"},{"type":"checkbox","name":"g18-iagreetobecontactedviabelowchannels[]","selector":"[value = \"Email\"]","propertyId":5479,"consentValue":"checked"},{"type":"checkbox","name":"g18-iagreetobecontactedviabelowchannels[]","selector":"[value = \"SMS\"]","propertyId":5480,"consentValue":"checked"}],
+                        consentIdentifiers: [{"type":"checkbox","name":"g18-iagreetobecontactedviabelowchannels[]","selector":"[value = \"Phone Calls\"]","propertyId":5481,"consentValue":"checked"},{"type":"checkbox","name":"g18-iagreetobecontactedviabelowchannels[]","selector":"[value = \"Email\"]","propertyId":5482,"consentValue":"checked"},{"type":"checkbox","name":"g18-iagreetobecontactedviabelowchannels[]","selector":"[value = \"SMS\"]","propertyId":5483,"consentValue":"checked"}],
                         consentTrigger: {
-                            action: 'click',
+                            action: 'submit',
                             selector: '[data-id-attr = "placeholder"]'
                         }
                     };
