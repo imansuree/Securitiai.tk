@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <script type="text/javascript" src="https://cdn-prod.securiti.ai/consent/auto_blocking/f84be4f0-e65e-40d3-af64-f6f4ae7b602f/8b5fe69d-483b-4e46-abf0-5d9824c4dc6e.js"></script>
    <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -23,6 +24,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       }
     </style>
   <link rel="shortcut icon" href="https://securiti.ai/wp-content/themes/privaci/_ui/media/favicons/favicon.ico">
+  <link rel='stylesheet' type='text/css' href='https://cdn-prod.securiti.ai/consent/cookie-consent.css' />
   </head>
   <body>
 <!-- Google Tag Manager (noscript) -->
@@ -38,5 +40,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
    <a class="twitter-timeline" href="https://twitter.com/SecuritiAI?ref_src=twsrc%5Etfw">Tweets by SecuritiAI</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
   
     </center>
+    <!-- After adding this script, call setConsentBannerParams({uuid: <unique id> }) to set unique ID for a customer. -->
+<script>
+(function () {
+	var s = document.createElement('script');
+	s.src = 'https://cdn-prod.securiti.ai/consent/cookie-consent-sdk.js';
+	s.setAttribute('data-tenant-uuid', 'f84be4f0-e65e-40d3-af64-f6f4ae7b602f');
+	s.setAttribute('data-domain-uuid', '8b5fe69d-483b-4e46-abf0-5d9824c4dc6e');
+	s.setAttribute('data-backend-url', 'https://app.securiti.ai');
+	s.defer = true;
+	var parent_node = document.head || document.body;
+	parent_node.appendChild(s);
+	s.addEventListener('load', function() { window.initCmp(); });
+})()
+</script>
   </body>
 </html>
