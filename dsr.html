@@ -1,26 +1,35 @@
 <html>
 <head>
 <script>
-function updateiframe() 
-{
-if(document.getElementById('states').value == 'CA')
-	{
+  document.getElementById("states").onchange = changeListener;
+  
+  function changeListener(){
+  var value = this.value
+    console.log(value);
+    
+    if (value == "California"){
 		document.getElementById('myIframe').src="http://google.com"
 		console.log('hello');
 		
 	}
-}
+    }
+    
+  }
+
 </script>
 </head>
 
 <body>
-<label for="states">Choose a state:</label>
-<select name="states" id="states" onclick="updateiframe()">
-  <option value="California">CA</option>
+<h>Please select your state below:</h><br>
+<Select id="states">
+   <option value="California">CA</option>
   <option value="Others1">others1</option>
   <option value="others2">others2</option>
-</select>
+</Select>
 	<br/>
 <iframe id="myIframe" src="https://privacy-central.securiti.ai/dsr-embed/59c7a987-5c27-4907-9eaa-d9ddd9fe699e"></iframe>
 	</body>
 </html>
+
+
+
