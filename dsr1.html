@@ -1,28 +1,31 @@
 <html>
 <head>
    <script>
-  document.getElementById("states").onchange = changeListener;
-  
-  function changeListener(){
-  var value = this.value
+$(document).ready(function() {
+  // SELECT MENU
+  $("#mySelect").change(function() {
+    var value = $(this).val();
+
+    //IFRAME TAG
     console.log(value);
-    
-    if (value == "Califronia"){
-      document.body.style.background = "red";
-    }else if (value == "Others"){
-      document.body.style.background = "blue";
-    }
-    
-  }
+    $("#myPhotoSphere").attr('src', value);
+  })
+});
 
 </script>
    </head>
-<body>
-         <h>Would you like to see count values per hour or minute?</h><br>
-<Select id="states">
-   <option value="Califronia">Califronia</option>
-   <option value="Others">Others</option>
-</Select>
+   <body>
+<!-- VIRTUAL TOUR -->
+<select id="mySelect">
+  <option value="" disabled selected> Select a PhotoSphere </option>
+  <option value="http://www.google.com">Google</option>
+  <option value="http://www.yahoo.com">Yahoo!</option>
+  <option value="http://www.msn.com">MSN</option>
+</select>
+
+<div>
+  <iframe id="myPhotoSphere" src="http://www.google.com" frameborder="0" scrolling="no" width="900" height="600"></iframe>
+</div>
 
    </body>
    </html>
