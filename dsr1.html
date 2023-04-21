@@ -1,18 +1,18 @@
 <h>Would you like to see count values per hour or minute?</h><br>
-<Select id="Selector">
-   <option value="hr">Hour</option>
-   <option value="min">Minute</option>
+<Select id="states">
+   <option value="Califronia">Califronia</option>
+   <option value="Others">Others</option>
 </Select>
 <script>
-  document.getElementById("Selector").onchange = changeListener;
+  document.getElementById("states").onchange = changeListener;
   
   function changeListener(){
   var value = this.value
     console.log(value);
     
-    if (value == "min"){
+    if (value == "Califronia"){
       document.body.style.background = "red";
-    }else if (value == "hr"){
+    }else if (value == "Others"){
       document.body.style.background = "blue";
     }
     
