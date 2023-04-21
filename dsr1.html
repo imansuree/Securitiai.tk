@@ -1,16 +1,21 @@
-<html>
-<head>
+<h>Would you like to see count values per hour or minute?</h><br>
+<Select id="Selector">
+   <option value="hr">Hour</option>
+   <option value="min">Minute</option>
+</Select>
+<script>
+  document.getElementById("Selector").onchange = changeListener;
+  
+  function changeListener(){
+  var value = this.value
+    console.log(value);
+    
+    if (value == "min"){
+      document.body.style.background = "red";
+    }else if (value == "hr"){
+      document.body.style.background = "blue";
+    }
+    
+  }
 
-</head>
-
-<body>
-<label form="states">Choose a state:</label>
-<select name="states" id="states" onclick="updateiframe()">
-  <option value="California">CA</option>
-  <option value="Others1">others1</option>
-  <option value="others2">others2</option>
-</select>
-	<br/>
-<iframe id="myIframe" src="https://privacy-central.securiti.ai/dsr-embed/59c7a987-5c27-4907-9eaa-d9ddd9fe699e"></iframe>
-	</body>
-</html>
+</script>
