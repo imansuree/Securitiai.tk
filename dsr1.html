@@ -1,33 +1,24 @@
+<!DOCTYPE html>
 <html>
 <head>
-   <script>
-$(document).ready(function() {
-  // SELECT MENU
-  $("#mySelect").change(function() {
-    var value = $(this).val();
+	<title>Change iframe source based on dropdown selection</title>
+</head>
+<body>
+	<select id="myDropdown" onchange="changeIframe()">
+		<option value="">Select a state</option>
+		<option value="https://privacy-central.securiti.ai/dsr-embed/f8efc06f-aee2-427c-a3a3-92872c776ddf?state=CA">California</option>
+		<option value="https://privacy-central.securiti.ai/dsr-embed/373dfdaa-ded8-48ef-8681-ede736c34fac?state=Others">Default/Others</option>
+		
+	</select>
+	<br/><br/><br/>
+	<iframe id="myIframe" src="" width="100%" height="1200"></iframe>
 
-    //IFRAME TAG
-    console.log(value);
-    $("#myPhotoSphere").attr('src', value);
-  })
-});
-
-</script>
-   </head>
-   <body>
-<!-- VIRTUAL TOUR -->
-<select id="mySelect">
-  <option value="" disabled selected> Select a State </option>
-  <option value="https://privacy-central.securiti.ai/dsr-embed/f8efc06f-aee2-427c-a3a3-92872c776ddf">CPRA</option>
-  <option value="https://privacy-central.securiti.ai/dsr-embed/373dfdaa-ded8-48ef-8681-ede736c34fac">Default1</option>
-  <option value="https://privacy-central.securiti.ai/dsr-embed/373dfdaa-ded8-48ef-8681-ede736c34fac">Default2</option>
-</select>
-
-<div>
-  <iframe id="myPhotoSphere" src="https://privacy-central.securiti.ai/dsr-embed/373dfdaa-ded8-48ef-8681-ede736c34fac" frameborder="10" scrolling="no" width="100%" height="100%"></iframe>
-</div>
-
-   </body>
-   </html>
-   
-   
+	<script>
+		function changeIframe() {
+			var dropdown = document.getElementById("myDropdown");
+			var iframe = document.getElementById("myIframe");
+			iframe.src = dropdown.value;
+		}
+	</script>
+</body>
+</html>
