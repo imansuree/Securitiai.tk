@@ -1,0 +1,15 @@
+Instructions:
+
+1. Copy script to the /mnt folder. And grant permissions.  
+	- cp monitor_pod_util.sh /mnt
+	- chmod +x /mnt/monitor_pod_util.sh
+2. Add a cron job using crontab
+	- crontab -e.
+	- add the following line. 
+	  '*/5 * * * * /mnt/monitor_pod_util.sh'
+3. Wait for 10 mins to let the script run 
+4. Verify log file tail -f /mnt/monitor.log
+5. The cron job will run every 5 mins and write to the monitor.log file. 
+6. Copy the file "monitor" from this folder to /etc/logrotate.d/
+7. Start logrotate.
+	- logrotate /etc/logrotate.d/monitor
