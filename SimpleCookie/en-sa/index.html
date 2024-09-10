@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Script</title>
+    <script>
+    (function () {
+        var s = document.createElement('script');
+        s.src = 'https://cdn-app5.securiti.ai/consent/cookie-consent-sdk-loader.js';
+        s.setAttribute('data-tenant-uuid', 'a811aa6c-e667-4555-8266-6bb08009a518');
+        s.setAttribute('data-domain-uuid', '81f22aa9-cc83-4af0-9ea4-be8d4fc08bd4');
+        s.setAttribute('data-backend-url', 'https://app5.securiti.ai');
+        s.setAttribute('data-securiti-staging-mode', 'true');
+        s.setAttribute('data-skip-css', 'false');
+        s.defer = true;
+        s.addEventListener('load', function() {
+            window.setConsentBannerParams(
+                {
+                    overrideBannerLanguage: {
+                        'http://localhost:8000/ar-sa': 'ar',
+                        'http://localhost:8000/en-sa/': 'en',
+                    }
+                }
+            );
+        });
+        var parent_node = document.head || document.body;
+        parent_node.appendChild(s);
+    })()
+    </script>
+</head>
+<body>
+    <h1>Test Cookie Consent</h1>
+</body>
+</html>
