@@ -103,8 +103,8 @@
 
             // Define language overrides based on the path
             var languageOverrides = {
-                '/ar-sa': 'ar',
-                '/en-sa/': 'en'
+                '/Securitiai.tk/Cookie-Language-Condition/ar-sa': 'ar',
+                '/Securitiai.tk/Cookie-Language-Condition/en-sa': 'en'
             };
 
             // Check if the current path matches one of the language overrides
@@ -125,9 +125,9 @@
     function changeLanguage() {
         var language = document.getElementById('languageSelect').value;
         if (language === 'ar') {
-            window.location.pathname = '/ar-sa';
+            window.location.pathname = '/Securitiai.tk/Cookie-Language-Condition/ar-sa';
         } else if (language === 'en') {
-            window.location.pathname = '/en-sa/';
+            window.location.pathname = '/Securitiai.tk/Cookie-Language-Condition/en-sa';
         }
     }
 
@@ -136,9 +136,9 @@
         var path = window.location.pathname;
         var languageSelect = document.getElementById('languageSelect');
         
-        if (path === '/ar-sa') {
+        if (path === '/Securitiai.tk/Cookie-Language-Condition/ar-sa') {
             languageSelect.value = 'ar';
-        } else if (path === '/en-sa/') {
+        } else if (path === '/Securitiai.tk/Cookie-Language-Condition/en-sa') {
             languageSelect.value = 'en';
         }
     });
@@ -154,7 +154,8 @@
         <div class="language-selector">
             <label for="languageSelect">Language:</label>
             <select id="languageSelect" onchange="changeLanguage()">
-                <option value="en" selected>English</option>
+                <option value="" disabled selected>Select Language</option>
+                <option value="en">English</option>
                 <option value="ar">Arabic</option>
             </select>
         </div>
