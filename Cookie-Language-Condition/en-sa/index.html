@@ -3,7 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test Script</title>
+    <title>Extra.com Themed Page</title>
+    <style>
+        /* Extra.com Theme Colors */
+        :root {
+            --primary-blue: #007aff;
+            --secondary-blue: #0051a3;
+            --highlight-red: #e60000;
+            --white-color: #ffffff;
+            --gray-color: #f5f5f5;
+        }
+
+        /* Reset margins and padding */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--gray-color);
+            color: #333;
+        }
+
+        /* Header bar */
+        header {
+            background-color: var(--primary-blue);
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Header title */
+        h1 {
+            color: var(--white-color);
+            font-size: 24px;
+            margin-left: 20px;
+        }
+
+        /* Language selector */
+        .language-selector {
+            background-color: var(--white-color);
+            padding: 5px 10px;
+            border: 1px solid var(--primary-blue);
+            border-radius: 5px;
+            margin-right: 20px;
+        }
+
+        /* Language dropdown styling */
+        #languageSelect {
+            border: none;
+            background: transparent;
+            font-size: 16px;
+            color: var(--secondary-blue);
+        }
+
+        #languageSelect option {
+            color: black;
+        }
+
+        /* Button styling */
+        .button {
+            padding: 10px 20px;
+            background-color: var(--highlight-red);
+            color: var(--white-color);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Button hover effect */
+        .button:hover {
+            background-color: darkred;
+        }
+
+        /* Main content */
+        main {
+            padding: 30px;
+            text-align: center;
+        }
+    </style>
     <script>
     (function () {
         var s = document.createElement('script');
@@ -22,7 +104,7 @@
             // Define language overrides based on the path
             var languageOverrides = {
                 '/ar-sa': 'ar',
-                '/en-sa': 'en'
+                '/en-sa/': 'en'
             };
 
             // Check if the current path matches one of the language overrides
@@ -38,9 +120,54 @@
         var parent_node = document.head || document.body;
         parent_node.appendChild(s);
     })()
+
+    // Function to change the language based on dropdown selection
+    function changeLanguage() {
+        var language = document.getElementById('languageSelect').value;
+        if (language === 'ar') {
+            window.location.pathname = '/ar-sa';
+        } else if (language === 'en') {
+            window.location.pathname = '/en-sa/';
+        }
+    }
+
+    // Automatically set dropdown based on current path
+    document.addEventListener('DOMContentLoaded', function() {
+        var path = window.location.pathname;
+        var languageSelect = document.getElementById('languageSelect');
+        
+        if (path === '/ar-sa') {
+            languageSelect.value = 'ar';
+        } else if (path === '/en-sa/') {
+            languageSelect.value = 'en';
+        }
+    });
     </script>
 </head>
 <body>
-    <h1>Test Cookie Consent</h1>
+
+    <!-- Header styled like Extra.com -->
+    <header>
+        <h1>Extra.com Inspired Page</h1>
+
+        <!-- Language selector dropdown -->
+        <div class="language-selector">
+            <label for="languageSelect">Language:</label>
+            <select id="languageSelect" onchange="changeLanguage()">
+                <option value="en" selected>English</option>
+                <option value="ar">Arabic</option>
+            </select>
+        </div>
+    </header>
+
+    <!-- Main content area -->
+    <main>
+        <h2>Welcome to the Cookie Consent Test Page</h2>
+        <p>Select a language from the top-right corner to change the language settings.</p>
+
+        <!-- Sample button -->
+        <button class="button">Explore More</button>
+    </main>
+
 </body>
 </html>
