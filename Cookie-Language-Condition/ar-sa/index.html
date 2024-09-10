@@ -1,6 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Include Cookie Consent SDK Script -->
+    <script>
+    (function () {
+        var s = document.createElement('script');
+        s.src = 'https://cdn-app5.securiti.ai/consent/cookie-consent-sdk-loader.js';
+        s.setAttribute('data-tenant-uuid', 'a811aa6c-e667-4555-8266-6bb08009a518');
+        s.setAttribute('data-domain-uuid', '81f22aa9-cc83-4af0-9ea4-be8d4fc08bd4');
+        s.setAttribute('data-backend-url', 'https://app5.securiti.ai');
+        s.setAttribute('data-securiti-staging-mode', 'true');
+        s.setAttribute('data-skip-css', 'false');
+        s.defer = true;
+
+        s.addEventListener('load', function() {
+            var path = window.location.pathname;
+
+            var languageOverrides = {
+                '/Securitiai.tk/Cookie-Language-Condition/ar-sa/': 'ar',
+                '/Securitiai.tk/Cookie-Language-Condition/en-sa/': 'en'
+            };
+
+            var lang = languageOverrides[path] || 'en';
+
+            window.setConsentBannerParams({
+                overrideBannerLanguage: lang
+            });
+
+            console.log('Loaded with language:', lang);
+        });
+
+        var parent_node = document.head || document.body;
+        parent_node.appendChild(s);
+    })()
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Extra.com Themed Page</title>
@@ -86,62 +120,27 @@
             text-align: center;
         }
     </style>
+    <!-- Include Language Dropdown Script -->
     <script>
-    (function () {
-        var s = document.createElement('script');
-        s.src = 'https://cdn-app5.securiti.ai/consent/cookie-consent-sdk-loader.js';
-        s.setAttribute('data-tenant-uuid', 'a811aa6c-e667-4555-8266-6bb08009a518');
-        s.setAttribute('data-domain-uuid', '81f22aa9-cc83-4af0-9ea4-be8d4fc08bd4');
-        s.setAttribute('data-backend-url', 'https://app5.securiti.ai');
-        s.setAttribute('data-securiti-staging-mode', 'true');
-        s.setAttribute('data-skip-css', 'false');
-        s.defer = true;
+        function changeLanguage() {
+            var language = document.getElementById('languageSelect').value;
+            if (language === 'ar') {
+                window.location.pathname = '/Securitiai.tk/Cookie-Language-Condition/ar-sa/';
+            } else if (language === 'en') {
+                window.location.pathname = '/Securitiai.tk/Cookie-Language-Condition/en-sa/';
+            }
+        }
 
-        s.addEventListener('load', function() {
-            // Get the current path
+        document.addEventListener('DOMContentLoaded', function() {
             var path = window.location.pathname;
-
-            // Define language overrides based on the path
-            var languageOverrides = {
-                '/Securitiai.tk/Cookie-Language-Condition/ar-sa': 'ar',
-                '/Securitiai.tk/Cookie-Language-Condition/en-sa': 'en'
-            };
-
-            // Check if the current path matches one of the language overrides
-            var lang = languageOverrides[path] || 'en'; // Default to 'en' if no match
-
-            window.setConsentBannerParams({
-                overrideBannerLanguage: lang
-            });
-
-            console.log('Loaded with language:', lang);
+            var languageSelect = document.getElementById('languageSelect');
+            
+            if (path === '/Securitiai.tk/Cookie-Language-Condition/ar-sa/') {
+                languageSelect.value = 'ar';
+            } else if (path === '/Securitiai.tk/Cookie-Language-Condition/en-sa/') {
+                languageSelect.value = 'en';
+            }
         });
-
-        var parent_node = document.head || document.body;
-        parent_node.appendChild(s);
-    })()
-
-    // Function to change the language based on dropdown selection
-    function changeLanguage() {
-        var language = document.getElementById('languageSelect').value;
-        if (language === 'ar') {
-            window.location.pathname = '/Securitiai.tk/Cookie-Language-Condition/ar-sa';
-        } else if (language === 'en') {
-            window.location.pathname = '/Securitiai.tk/Cookie-Language-Condition/en-sa';
-        }
-    }
-
-    // Automatically set dropdown based on current path
-    document.addEventListener('DOMContentLoaded', function() {
-        var path = window.location.pathname;
-        var languageSelect = document.getElementById('languageSelect');
-        
-        if (path === '/Securitiai.tk/Cookie-Language-Condition/ar-sa') {
-            languageSelect.value = 'ar';
-        } else if (path === '/Securitiai.tk/Cookie-Language-Condition/en-sa') {
-            languageSelect.value = 'en';
-        }
-    });
     </script>
 </head>
 <body>
