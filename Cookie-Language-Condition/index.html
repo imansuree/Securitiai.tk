@@ -14,16 +14,27 @@
         s.setAttribute('data-securiti-staging-mode', 'true');
         s.setAttribute('data-skip-css', 'false');
         s.defer = true;
+
         s.addEventListener('load', function() {
-            window.setConsentBannerParams(
-                {
-                    overrideBannerLanguage: {
-                        'http://localhost:8000/ar-sa': 'ar',
-                        'http://localhost:8000/en-sa/': 'en',
-                    }
-                }
-            );
+            // Get the current path
+            var path = window.location.pathname;
+
+            // Define language overrides based on the path
+            var languageOverrides = {
+                '/ar-sa': 'ar',
+                '/en-sa': 'en'
+            };
+
+            // Check if the current path matches one of the language overrides
+            var lang = languageOverrides[path] || 'en'; // Default to 'en' if no match
+
+            window.setConsentBannerParams({
+                overrideBannerLanguage: lang
+            });
+
+            console.log('Loaded with language:', lang);
         });
+
         var parent_node = document.head || document.body;
         parent_node.appendChild(s);
     })()
