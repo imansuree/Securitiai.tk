@@ -18,8 +18,8 @@
             window.setConsentBannerParams(
                 {
                     overrideBannerLanguage: {
-                        'http://localhost:8000/ar-sa': 'ar',
-                        'http://localhost:8000/en-sa/': 'en',
+                        '/ar-sa': 'ar',
+                        '/en-sa': 'en',
                     }
                 }
             );
@@ -27,6 +27,7 @@
         var parent_node = document.head || document.body;
         parent_node.appendChild(s);
     })()
+    </script>
     </script>
 </head>
 <body>
