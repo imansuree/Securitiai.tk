@@ -3,28 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up Form</title>
+    <title>Create Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fff;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 14px;
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"], 
+        input[type="email"], 
+        input[type="password"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+
+        .checkbox-group label {
+            font-size: 14px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .checkbox-group small {
+            font-size: 12px;
+            color: #777;
+        }
+
+        .terms {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .terms a {
+            color: #000;
+            text-decoration: underline;
+        }
+
+        .submit-btn {
+            background-color: #000;
+            color: #fff;
+            font-size: 16px;
+            padding: 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            background-color: #333;
+        }
+    </style>
 </head>
 <body>
-    <h2>Sign Up</h2>
-    <form action="https://formspree.io/f/xnnaylnw" method="POST">
-        <label for="username">Username:</label><br>
-        <input type="text" id="username" name="username" required><br><br>
 
-        <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email" required><br><br>
+    <div class="container">
+        <h2>Create an IKEA Profile</h2>
+        <p>Already have an account? <a href="#">Login</a></p>
 
-        <label>
-            <input type="checkbox" id="agreeTerms" name="agreeTerms" required>
-            I agree to the <a href="#">terms and conditions</a>
-        </label><br><br>
+        <form action="/submit-signup" method="POST">
+            <label for="firstName">First name</label>
+            <input type="text" id="firstName" name="firstName" required>
 
-        <label>
-            <input type="checkbox" id="receiveMarketing" name="receiveMarketing">
-            I want to receive marketing emails
-        </label><br><br>
+            <label for="lastName">Last name</label>
+            <input type="text" id="lastName" name="lastName" required>
 
-        <input type="submit" value="Sign Up">
-    </form>
+            <label for="mobile">Mobile</label>
+            <input type="text" id="mobile" name="mobile" required>
+
+            <label for="email">Email (username)</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+
+            <div class="checkbox-group">
+                <label>
+                    <input type="checkbox" id="marketingEmail" name="marketingEmail">
+                    I would like to receive news, tips and marketing offers from IKEA via email.
+                </label>
+                <label>
+                    <input type="checkbox" id="marketingSMS" name="marketingSMS">
+                    Via SMS
+                </label>
+            </div>
+
+            <div class="terms">
+                <input type="checkbox" id="agreeTerms" name="agreeTerms" required>
+                <label for="agreeTerms">I have read and understood the <a href="#">Privacy policy</a>.</label>
+            </div>
+
+            <button type="submit" class="submit-btn">Create profile</button>
+        </form>
+    </div>
+
 </body>
 </html>
