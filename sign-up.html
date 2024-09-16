@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Profile</title>
+    <!-- Google Font for IKEA-like style -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Noto Sans', sans-serif;
             background-color: #fff;
             color: #333;
             display: flex;
@@ -24,8 +26,10 @@
         }
 
         h2 {
-            font-size: 24px;
+            font-size: 28px;
+            font-weight: 700;
             margin-bottom: 10px;
+            color: #333;
         }
 
         p {
@@ -42,18 +46,28 @@
         label {
             font-size: 14px;
             margin-bottom: 5px;
+            font-weight: 400;
         }
 
         input[type="text"], 
         input[type="email"], 
         input[type="password"] {
-            padding: 10px;
+            padding: 12px;
             font-size: 16px;
             border: 1px solid #ccc;
             border-radius: 4px;
             margin-bottom: 20px;
             width: 100%;
             box-sizing: border-box;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input[type="text"]:focus, 
+        input[type="email"]:focus, 
+        input[type="password"]:focus {
+            border-color: #000;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            outline: none;
         }
 
         input[type="checkbox"] {
@@ -98,20 +112,37 @@
             border-radius: 4px;
             cursor: pointer;
             width: 100%;
+            transition: background-color 0.3s ease;
         }
 
         .submit-btn:hover {
             background-color: #333;
+        }
+
+        .submit-btn:focus {
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+        }
+
+        a {
+            text-decoration: none;
+            color: #000;
+            font-weight: 700;
+        }
+
+        a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h2>Create an Securiti Profile</h2>
+        <h2>Create a SECURITI Profile</h2>
         <p>Already have an account? <a href="#">Login</a></p>
 
-        <form action="/submit-signup" method="POST">
+        <!-- Formspree form action -->
+        <form action="https://formspree.io/f/xnnaylnw" method="POST">
             <label for="firstName">First name</label>
             <input type="text" id="firstName" name="firstName" required>
 
@@ -130,7 +161,7 @@
             <div class="checkbox-group">
                 <label>
                     <input type="checkbox" id="marketingEmail" name="marketingEmail">
-                    I would like to receive news, tips and marketing offers from Securiti via email.
+                    I would like to receive news, tips, and marketing offers from SECURITI via email.
                 </label>
                 <label>
                     <input type="checkbox" id="marketingSMS" name="marketingSMS">
