@@ -56,17 +56,17 @@
                 black 30px,
                 black 60px  /* Gap between dashes */
             );
-            background-size: auto 100%; /* Ensures the dashed line pattern repeats seamlessly */
+            background-size: auto 60px; /* Ensures the dashed line pattern repeats seamlessly */
             animation: scroll-center-line 3s linear infinite; /* Slower animation */
         }
 
         /* Animation for the center dashed line to move */
         @keyframes scroll-center-line {
             0% {
-                background-position-y: 0;
+                background-position: 0 0;
             }
             100% {
-                background-position-y: 100%;
+                background-position: 0 60px; /* Moves the dashed line smoothly */
             }
         }
 
