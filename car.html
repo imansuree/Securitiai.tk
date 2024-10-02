@@ -74,33 +74,19 @@
             }
         }
 
-        /* More realistic car placeholder */
+        /* Car element with Hot Wheels aerial image */
         .car {
             position: absolute;
             bottom: 20%;
             left: 50%;
             transform: translateX(-50%);
-            width: 80px;
-            height: 160px;
-            background-color: #d32f2f; /* Car body color */
-            border-radius: 15px; /* Rounded edges */
-            box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.4); /* Shadow for realism */
+            width: 100px; /* Adjust the width based on your image */
+            height: 200px; /* Adjust the height based on your image */
+            background-image: url('YOUR_HOTWHEELS_IMAGE_URL'); /* Add the Hot Wheels image URL */
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
             z-index: 1000; /* Keep car on top of the road */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        /* Adding car windows for realism */
-        .car::before {
-            content: '';
-            position: absolute;
-            top: 15%;
-            left: 10%;
-            width: 80%;
-            height: 50%;
-            background-color: #fff; /* Window color */
-            border-radius: 10px;
         }
     </style>
 </head>
@@ -112,7 +98,7 @@
         <div class="center-line"></div>
     </div>
 
-    <!-- The car placeholder with more realistic styling -->
+    <!-- The car with the Hot Wheels aerial view image -->
     <div class="car"></div>
 
 </body>
