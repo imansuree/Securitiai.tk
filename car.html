@@ -6,7 +6,7 @@
     <title>Moving Car on Road</title>
     <style>
         :root {
-            --dash-speed: 1.5s; /* Adjust this variable for speed (2x faster would be 1.5s instead of 3s) */
+            --dash-speed: 1.5s; /* Adjust this variable for speed */
         }
 
         body, html {
@@ -74,16 +74,33 @@
             }
         }
 
-        /* Optional: A fixed car element */
+        /* More realistic car placeholder */
         .car {
             position: absolute;
-            bottom: 50px; /* Adjust car position */
+            bottom: 20%;
             left: 50%;
             transform: translateX(-50%);
-            width: 100px;
-            height: 200px;
-            background-color: red; /* Replace with actual car image if you want */
+            width: 80px;
+            height: 160px;
+            background-color: #d32f2f; /* Car body color */
+            border-radius: 15px; /* Rounded edges */
+            box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.4); /* Shadow for realism */
             z-index: 1000; /* Keep car on top of the road */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Adding car windows for realism */
+        .car::before {
+            content: '';
+            position: absolute;
+            top: 15%;
+            left: 10%;
+            width: 80%;
+            height: 50%;
+            background-color: #fff; /* Window color */
+            border-radius: 10px;
         }
     </style>
 </head>
@@ -95,7 +112,7 @@
         <div class="center-line"></div>
     </div>
 
-    <!-- The car remains stationary -->
+    <!-- The car placeholder with more realistic styling -->
     <div class="car"></div>
 
 </body>
