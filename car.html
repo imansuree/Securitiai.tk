@@ -48,24 +48,25 @@
             transform: translateX(-50%);
             top: 0;
             width: 5px;
-            height: 200vh; /* Extra height for smoother scrolling */
+            height: 100vh;
             background: repeating-linear-gradient(
                 to bottom,
                 yellow 0%,
-                yellow 20px,
-                black 20px,
-                black 40px
+                yellow 30px, /* Height of dash */
+                black 30px,
+                black 60px  /* Gap between dashes */
             );
-            animation: scroll-center-line 1s linear infinite;
+            background-size: auto 100%; /* Ensures the dashed line pattern repeats seamlessly */
+            animation: scroll-center-line 3s linear infinite; /* Slower animation */
         }
 
         /* Animation for the center dashed line to move */
         @keyframes scroll-center-line {
             0% {
-                transform: translateY(0);
+                background-position-y: 0;
             }
             100% {
-                transform: translateY(100vh);
+                background-position-y: 100%;
             }
         }
 
