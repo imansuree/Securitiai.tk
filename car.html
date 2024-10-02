@@ -7,6 +7,8 @@
     <style>
         :root {
             --dash-speed: 1.5s; /* Adjust this variable for speed */
+            --car-image: url('YOUR_HOTWHEELS_IMAGE_URL'); /* Change this to your Hot Wheels image URL */
+            --default-car-image: url('https://via.placeholder.com/100x200.png?text=Car'); /* Default placeholder image */
         }
 
         body, html {
@@ -74,7 +76,7 @@
             }
         }
 
-        /* Car element with Hot Wheels aerial image */
+        /* Car element with conditional background image */
         .car {
             position: absolute;
             bottom: 20%;
@@ -82,11 +84,27 @@
             transform: translateX(-50%);
             width: 100px; /* Adjust the width based on your image */
             height: 200px; /* Adjust the height based on your image */
-            background-image: url('YOUR_HOTWHEELS_IMAGE_URL'); /* Add the Hot Wheels image URL */
+            background-image: var(--car-image); /* Use the hosted image URL */
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
             z-index: 1000; /* Keep car on top of the road */
+        }
+
+        /* Fallback to default image if no URL is provided */
+        .car::before {
+            content: '';
+            display: block;
+            background-image: var(--default-car-image); /* Default placeholder image */
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            width: 100%; /* Make sure it covers the car area */
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 1; /* Initially visible */
         }
     </style>
 </head>
@@ -98,8 +116,28 @@
         <div class="center-line"></div>
     </div>
 
-    <!-- The car with the Hot Wheels aerial view image -->
+    <!-- The car element which will use the Hot Wheels aerial view image -->
     <div class="car"></div>
 
+    <script>
+        // Check if the hosted image URL is valid
+        const carImageUrl = getComputedStyle(document.documentElement).getPropertyValue('--car-image').trim();
+        const carElement = document.querySelector('.car');
+
+        // Create a new Image object to check if the image loads
+        const img = new Image();
+        img.src = carImageUrl;
+
+        img.onload = () => {
+            // If the image loads successfully, set it as the background image
+            carElement.style.backgroundImage = carImageUrl;
+            carElement.querySelector('::before').style.display = 'none'; // Hide the default placeholder
+        };
+
+        img.onerror = () => {
+            // If image fails to load, retain the default placeholder
+            console.log("Image not found. Using default placeholder.");
+        };
+    </script>
 </body>
 </html>
