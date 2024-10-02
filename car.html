@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moving Car on Road</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        /* Road Container */
+        .road {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            background-color: black; /* Road background */
+            overflow: hidden;
+            animation: scroll-road 3s linear infinite; /* Control scroll speed */
+        }
+
+        /* Left Solid Yellow Line */
+        .left-line {
+            position: absolute;
+            left: 5vw; /* Adjust for left margin */
+            top: 0;
+            width: 5px;
+            height: 100%;
+            background-color: yellow;
+        }
+
+        /* Right Solid Yellow Line */
+        .right-line {
+            position: absolute;
+            right: 5vw; /* Adjust for right margin */
+            top: 0;
+            width: 5px;
+            height: 100%;
+            background-color: yellow;
+        }
+
+        /* Center Dashed Line */
+        .center-line {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 0;
+            width: 5px;
+            height: 100%;
+            background: repeating-linear-gradient(
+                to bottom,
+                yellow 0%,
+                yellow 20px,
+                black 20px,
+                black 40px
+            );
+        }
+
+        /* Animation to scroll the dashed line downwards */
+        @keyframes scroll-road {
+            0% {
+                background-position-y: 0;
+            }
+            100% {
+                background-position-y: 100%;
+            }
+        }
+
+        /* Optional: A fixed car element */
+        .car {
+            position: absolute;
+            bottom: 50px; /* Adjust car position */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 200px;
+            background-color: red; /* Replace with actual car image if you want */
+            z-index: 1000; /* Keep car on top of the road */
+        }
+    </style>
+</head>
+<body>
+    <!-- The road div represents the moving road -->
+    <div class="road">
+        <div class="left-line"></div>
+        <div class="right-line"></div>
+        <div class="center-line"></div>
+    </div>
+
+    <!-- The car remains stationary -->
+    <div class="car"></div>
+</body>
+</html>
