@@ -48,7 +48,7 @@
             transform: translateX(-50%);
             top: 0;
             width: 5px;
-            height: 100vh;
+            height: 200vh; /* Extra height for smoother scrolling */
             background: repeating-linear-gradient(
                 to bottom,
                 yellow 0%,
@@ -62,10 +62,10 @@
         /* Animation for the center dashed line to move */
         @keyframes scroll-center-line {
             0% {
-                background-position-y: 0;
+                transform: translateY(0);
             }
             100% {
-                background-position-y: 100%;
+                transform: translateY(100vh);
             }
         }
 
