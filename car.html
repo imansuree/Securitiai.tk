@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Moving Car on Road</title>
     <style>
+        :root {
+            --dash-speed: 1.5s; /* Adjust this variable for speed (2x faster would be 1.5s instead of 3s) */
+        }
+
         body, html {
             margin: 0;
             padding: 0;
@@ -57,7 +61,7 @@
                 black 60px  /* Gap between dashes */
             );
             background-size: auto 60px; /* Ensures the dashed line pattern repeats seamlessly */
-            animation: scroll-center-line 1s linear infinite; /* 3x faster animation */
+            animation: scroll-center-line var(--dash-speed) linear infinite; /* Using the speed variable */
         }
 
         /* Animation for the center dashed line to move */
