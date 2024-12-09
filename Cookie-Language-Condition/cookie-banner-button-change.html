@@ -117,20 +117,31 @@
         }
     </style>
     <!-- Include Language Dropdown Script -->
-    <script>
-        function changeLanguage() {
-            var language = document.getElementById('languageSelect').value;
-            window.setConsentBannerParams({
-                overrideBannerLanguage: language
-            });
+  <script>
+    function changeLanguage() {
+        var language = document.getElementById('languageSelect').value;
 
-            console.log('Language set to:', language);
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('Page loaded.');
+        // Set the banner language dynamically
+        window.setConsentBannerParams({
+            overrideBannerLanguage: language
         });
-    </script>
+
+        console.log('Language set to:', language);
+
+        // Reinitialize the banner to apply changes
+        if (window.reinitializeConsentBanner) {
+            window.reinitializeConsentBanner();
+            console.log('Consent banner reinitialized.');
+        } else {
+            console.error('Reinitialize function not available.');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('Page loaded.');
+    });
+</script>
+
 </head>
 <body>
 
