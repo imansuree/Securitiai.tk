@@ -24,15 +24,15 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Extra.com Themed Page</title>
+    <title>Cookie Consent Banner</title>
     <style>
-        /* Extra.com Theme Colors */
+        /* Securiti.ai Inspired Theme Colors */
         :root {
-            --primary-blue: #007aff;
-            --secondary-blue: #0051a3;
-            --highlight-red: #e60000;
+            --primary-blue: #1e88e5;
+            --secondary-blue: #1565c0;
+            --neutral-gray: #f4f5f7;
+            --dark-gray: #444;
             --white-color: #ffffff;
-            --gray-color: #f5f5f5;
         }
 
         /* Reset margins and padding */
@@ -45,8 +45,8 @@
         /* Body styling */
         body {
             font-family: 'Arial', sans-serif;
-            background-color: var(--gray-color);
-            color: #333;
+            background-color: var(--neutral-gray);
+            color: var(--dark-gray);
         }
 
         /* Header bar */
@@ -83,13 +83,13 @@
         }
 
         #languageSelect option {
-            color: black;
+            color: var(--dark-gray);
         }
 
         /* Button styling */
         .button {
             padding: 10px 20px;
-            background-color: var(--highlight-red);
+            background-color: var(--secondary-blue);
             color: var(--white-color);
             border: none;
             border-radius: 5px;
@@ -98,13 +98,22 @@
 
         /* Button hover effect */
         .button:hover {
-            background-color: darkred;
+            background-color: #0d47a1;
         }
 
         /* Main content */
         main {
             padding: 30px;
             text-align: center;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary-blue);
+            color: var(--white-color);
+            text-align: center;
+            padding: 10px;
+            margin-top: 20px;
         }
     </style>
     <!-- Include Language Dropdown Script -->
@@ -125,9 +134,9 @@
 </head>
 <body>
 
-    <!-- Header styled like Extra.com -->
+    <!-- Header styled like Securiti.ai -->
     <header>
-        <h1>Extra.com Inspired Page</h1>
+        <h1>Cookie Consent Demo</h1>
 
         <!-- Language selector dropdown -->
         <div class="language-selector">
@@ -143,11 +152,16 @@
     <!-- Main content area -->
     <main>
         <h2>Welcome to the Cookie Consent Test Page</h2>
-        <p>Select a language from the top-right corner to change the language settings.</p>
+        <p>Select a language from the top-right corner to change the language settings dynamically.</p>
 
         <!-- Sample button -->
-        <button class="button">Explore More</button>
+        <button class="button">Learn More</button>
     </main>
+
+    <!-- Footer -->
+    <footer>
+        © 2024 Cookie Consent Demo. All rights reserved.
+    </footer>
 
 </body>
 </html>
