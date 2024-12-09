@@ -118,28 +118,36 @@
     </style>
     <!-- Include Language Dropdown Script -->
   <script>
-    function changeLanguage() {
-        var language = document.getElementById('languageSelect').value;
+      function changeLanguage() {
+    var language = document.getElementById('languageSelect').value;
 
-        // Set the banner language dynamically
-        window.setConsentBannerParams({
-            overrideBannerLanguage: language
-        });
+    // Set the banner language dynamically
+    window.setConsentBannerParams({
+        overrideBannerLanguage: language
+    });
 
-        console.log('Language set to:', language);
+    console.log('Language set to:', language);
 
-        // Reinitialize the banner to apply changes
-        if (window.reinitializeConsentBanner) {
-            window.reinitializeConsentBanner();
-            console.log('Consent banner reinitialized.');
-        } else {
-            console.error('Reinitialize function not available.');
-        }
+    // Reload the script to apply changes
+    var existingScript = document.querySelector('script[src*="cookie-consent-sdk-loader.js"]');
+    if (existingScript) {
+        existingScript.remove();
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
-        console.log('Page loaded.');
-    });
+    var s = document.createElement('script');
+    s.src = 'https://cdn-app5.securiti.ai/consent/cookie-consent-sdk-loader.js';
+    s.setAttribute('data-tenant-uuid', 'a811aa6c-e667-4555-8266-6bb08009a518');
+    s.setAttribute('data-domain-uuid', '81f22aa9-cc83-4af0-9ea4-be8d4fc08bd4');
+    s.setAttribute('data-backend-url', 'https://app5.securiti.ai');
+    s.setAttribute('data-securiti-staging-mode', 'true');
+    s.setAttribute('data-skip-css', 'false');
+    s.defer = true;
+
+    document.body.appendChild(s);
+
+    console.log('Consent banner script reloaded.');
+}
+
 </script>
 
 </head>
