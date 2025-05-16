@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Car on Road</title>
+  <style>
+    :root {
+      --car-image-url: 'https://via.placeholder.com/100x200.png?text=Hot+Car';
+    }
+
+    body, html {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: black;
+    }
+
+    .road {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+      background-color: black;
+    }
+
+    .left-line, .right-line {
+      position: absolute;
+      top: 0;
+      width: 5px;
+      height: 100%;
+      background: yellow;
+    }
+
+    .left-line { left: 5vw; }
+    .right-line { right: 5vw; }
+
+    .center-line {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 0;
+      width: 5px;
+      height: 100%;
+      background: repeating-linear-gradient(
+        yellow 0px, yellow 30px,
+        black 30px, black 60px
+      );
+      animation: dash 0.5s linear infinite;
+    }
+
+    @keyframes dash {
+      from { background-position: 0 0; }
+      to { background-position: 0 60px; }
+    }
+
+    .car {
+      position: absolute;
+      bottom: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 200px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="road">
+    <div class="left-line"></div>
+    <div class="right-line"></div>
+    <div class="center-line"></div>
+  </div>
+
+  <div class="car" id="car"></div>
+
+  <script>
+    const carElement = document.getElementById("car");
+
+    // Try loading car image
+    const image = new Image();
+    image.src = getComputedStyle(document.documentElement).getPropertyValue('--car-image-url').replace(/['"]/g, '').trim();
+
+    image.onload = () => {
+      carElement.style.backgroundImage = `url('${image.src}')`;
+    };
+
+    image.onerror = () => {
+      // If image fails, use fallback
+      carElement.style.backgroundImage = "url('https://via.placeholder.com/100x200.png?text=Car')";
+    };
+  </script>
+</body>
+</html>
