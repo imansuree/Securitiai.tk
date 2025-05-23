@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Official Deployment Guide: Securiti ePod V2 on AWS EKS</title>
+    <title>Lab Deployment Guide: Securiti ePod V2 on AWS EKS (UAT & Development)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Visualization & Content Choices:
         - Deployment Phases (Overall): Goal: Informative, structured guide -> Viz: Formal HTML sections with clear headings, detailed text, and embedded code blocks. Justification: Provides a comprehensive, step-by-step instructional document. Method: HTML, Tailwind.
@@ -176,18 +176,20 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
                 </svg>
             </button>
-            <h1 class="text-xl md:text-2xl font-bold">Official Deployment Guide: Securiti ePod V2 on AWS EKS</h1>
+            <h1 class="text-xl md:text-2xl font-bold">Lab Deployment Guide: Securiti ePod V2 on AWS EKS (UAT & Development)</h1>
         </div>
     </header>
 
     <div class="overlay" id="sidebar-overlay"></div>
 
-    <div class="flex flex-col md:flex-row flex-grow container mx-auto"> <aside id="sidebar" class="sidebar">
+    <div class="flex flex-col md:flex-row flex-grow container mx-auto">
+        <aside id="sidebar" class="sidebar">
             <nav id="sidebar-nav" class="sidebar-nav">
                 </nav>
         </aside>
 
-        <main class="flex-grow px-4 py-8 md:px-8"> <section class="text-center mb-8 p-4 bg-white rounded-lg shadow">
+        <main class="flex-grow px-4 py-8 md:px-8">
+            <section class="text-center mb-8 p-4 bg-white rounded-lg shadow">
                 <h2 class="text-2xl font-semibold text-sky-600 mb-2" id="introduction-section">Introduction</h2>
                 <p class="text-slate-600">This document provides a detailed, step-by-step guide for deploying Securiti ePod V2 on an Amazon Elastic Kubernetes Service (EKS) cluster using AWS CloudShell. It covers all necessary configurations, tool installations, and troubleshooting considerations to ensure a successful deployment.</p>
                 <p class="text-slate-600 mt-2">All commands required for the deployment process are embedded directly within each section for easy access and execution.</p>
