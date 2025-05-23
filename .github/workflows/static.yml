@@ -25,13 +25,20 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v4
 
-      - name: Set up GitHub Pages
+      - name: Setup GitHub Pages
         uses: actions/configure-pages@v3
+
+      # Temporary fix to resolve missing metadata
+      - name: Pre-load upload-artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: dummy
+          path: README.md  # Ensure there's at least one file in the repo
 
       - name: Upload static files
         uses: actions/upload-pages-artifact@v2
         with:
-          path: './'  # Update this path if your static content is in a subdirectory
+          path: './'  # Update if static files are in a subdirectory
 
       - name: Deploy to GitHub Pages
         id: deployment
