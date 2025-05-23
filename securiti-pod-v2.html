@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Securiti ePod V2 Deployment Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Visualization & Content Choices:
+        - Report Info: Command-line instructions -> Goal: Easy copy/understanding -> Viz/Presentation: Pre-formatted code blocks -> Interaction: Copy-to-clipboard button -> Justification: Standard for technical guides -> Library/Method: HTML, JS.
+        - Report Info: values.yaml content -> Goal: Clear display of YAML -> Viz/Presentation: Pre-formatted YAML block -> Interaction: Scrollable, Copy-to-clipboard -> Justification: Direct representation -> Library/Method: HTML, JS.
+        - Report Info: Explanations, notes -> Goal: Contextual information -> Viz/Presentation: Formatted text, lists -> Interaction: Tooltips (optional for future) -> Justification: Readability -> Library/Method: HTML.
+        - Report Info: Overall process -> Goal: Progress indication, navigation -> Viz/Presentation: Visual step list in sidebar -> Interaction: Clickable steps, Next/Prev buttons (implicit via step selection) -> Justification: User orientation -> Library/Method: HTML, JS.
+        - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        .code-block {
+            background-color: #1e293b; /* slate-900 */
+            color: #e2e8f0; /* slate-200 */
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            position: relative;
+        }
+        .copy-button {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background-color: #38bdf8; /* sky-400 */
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .copy-button:hover {
+            background-color: #0ea5e9; /* sky-500 */
+        }
+        .placeholder {
+            color: #fbbf24; /* amber-400 */
+            font-weight: bold;
+        }
+        /* Sidebar scrollbar styling */
+        #sidebar::-webkit-scrollbar {
+            width: 8px;
+        }
+        #sidebar::-webkit-scrollbar-track {
+            background: #f1f5f9; /* slate-100 */
+        }
+        #sidebar::-webkit-scrollbar-thumb {
+            background: #94a3b8; /* slate-400 */
+            border-radius: 4px;
+        }
+        #sidebar::-webkit-scrollbar-thumb:hover {
+            background: #64748b; /* slate-500 */
+        }
+        .step-content-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        .step-content-container::-webkit-scrollbar-track {
+            background: #f8fafc; /* slate-50 */
+        }
+        .step-content-container::-webkit-scrollbar-thumb {
+            background: #cbd5e1; /* slate-300 */
+            border-radius: 4px;
+        }
+        .step-content-container::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; /* slate-400 */
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
+
+    <header class="bg-sky-600 text-white p-4 shadow-md sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-xl md:text-2xl font-bold">Interactive Securiti ePod V2 Deployment Guide</h1>
+            <button id="menu-toggle" class="md:hidden p-2 rounded-md hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <div class="container mx-auto flex-grow flex flex-col md:flex-row mt-1">
+        <aside id="sidebar" class="w-full md:w-1/4 bg-white p-2 md:p-4 border-r border-slate-300 md:h-[calc(100vh-64px)] md:sticky md:top-[64px] overflow-y-auto transition-transform transform -translate-x-full md:translate-x-0 fixed md:relative z-40 md:z-auto shadow-lg md:shadow-none">
+            <nav id="step-navigation">
+                <h2 class="text-lg font-semibold text-sky-700 mb-3">Deployment Phases</h2>
+                </nav>
+        </aside>
+
+        <main id="main-content" class="w-full md:w-3/4 p-3 md:p-6 step-content-container overflow-y-auto md:h-[calc(100vh-64px)]">
+            <div id="step-content" class="bg-white p-4 sm:p-6 rounded-lg shadow">
+                <div class="text-center py-10">
+                    <h2 class="text-2xl font-semibold text-slate-700">Welcome!</h2>
+                    <p class="mt-2 text-slate-600">Select a step from the navigation to begin.</p>
+                    <p class="mt-4 text-sm text-slate-500">This guide will walk you through deploying Securiti ePod V2 on AWS EKS.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <div id="toast" class="fixed bottom-5 right-5 bg-green-500 text-white py-2 px-4 rounded-md shadow-lg transition-opacity duration-300 opacity-0">
+        Copied to clipboard!
+    </div>
+
+    <script>
+        const stepsData = [
+            {
+                phase: "Introduction",
+                title: "Overview & Prerequisites",
+                id: "intro",
+                content: `
+                    <p class="mb-4">This guide outlines the steps to deploy Securiti ePod V2 on an Amazon Elastic Kubernetes Service (EKS) cluster using AWS CloudShell, incorporating all necessary configurations and troubleshooting steps.</p>
+                    <h3 class="text-lg font-semibold text-sky-700 mb-2">Prerequisites:</h3>
+                    <ul class="list-disc list-inside mb-4 space-y-1">
+                        <li>Access to your AWS credentials.</li>
+                        <li>AWS CloudShell environment.</li>
+                    </ul>
+                `
+            },
+            {
+                phase: "1. Initial Setup",
+                title: "1.1. Setup eksctl",
+                id: "setup-eksctl",
+                content: `
+                    <p class="mb-2"><code>eksctl</code> is a command-line tool for creating and managing clusters on EKS.</p>
+                    <h4 class="font-medium text-slate-700 mb-1">Command:</h4>
+                `,
+                code: `curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp\\nsudo mv /tmp/eksctl /usr/local/bin`
+            },
+            {
+                phase: "1. Initial Setup",
+                title: "1.2. Setup awscli",
+                id: "setup-awscli",
+                content: `
+                    <p class="mb-2">The AWS Command Line Interface (CLI) is a unified tool to manage your AWS services. While AWS CloudShell often has <code>awscli</code> pre-installed, you can reinstall it if needed.</p>
+                    <h4 class="font-medium text-slate-700 mb-1">Command:</h4>
+                `,
+                code: `curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"\\nunzip awscliv2.zip\\nsudo ./aws/install`
+            },
+            {
+                phase: "1. Initial Setup",
+                title: "1.3. Install kubectl",
+                id: "install-kubectl",
+                content: `
+                    <p class="mb-2"><code>kubectl</code> is the command-line tool for running commands against Kubernetes clusters.</p>
+                    <h4 class="font-medium text-slate-700 mb-1">Command:</h4>
+                `,
+                code: `curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"\\nchmod +x kubectl\\nsudo mv kubectl /usr/local/bin/`
+            },
+            {
+                phase: "1. Initial Setup",
+                title: "1.4. Configure AWS Credentials",
+                id: "configure-aws-credentials",
+                content: `
+                    <p class="mb-2">You will be prompted to enter your AWS Access Key ID, AWS Secret Access Key, Default region (e.g., <code>us-west-2</code>), and Default output format (e.g., <code>json</code>).</p>
+                    <h4 class="font-medium text-slate-700 mb-1">Command:</h4>
+                `,
+                code: `aws configure`
+            },
+            {
+                phase: "2. EKS Cluster & Configuration",
+                title: "2.1. Create the EKS Cluster",
+                id: "create-eks-cluster",
+                content: `
+                    <p class="mb-2">This command creates your EKS cluster. The cluster name used in this guide is <code class="bg-slate-200 px-1 rounded">securiti-epod-cluster</code> and node group name is <code class="bg-slate-200 px-1 rounded">securiti-nodegroup</code>. Remember to replace <span class="placeholder">&lt;your-email@example.com&gt;</span> with your actual email for the Owner tag.</p>
+                    <h4 class="font-medium text-slate-700 mb-1">Command:</h4>
+                `,
+                code: `eksctl create cluster \\
+  --name securiti-epod-cluster \\
+  --region us-west-2 \\
+  --nodegroup-name securiti-nodegroup \\
+  --node-type m5.2xlarge \\
+  --nodes 1 \\
+  --nodes-min 1 \\
+  --nodes-max 1 \\
+  --managed \\
+  --tags "Owner=<span class="placeholder">&lt;your-email@example.com&gt;</span>"`,
+                notes: `During cluster creation, you might see warnings about Amazon Linux 2 (AL2) AMIs deprecation and recommendations for AL2023 or Bottlerocket. These are informational. Also, <code>eksctl</code> will note that OIDC is disabled by default for the <code>vpc-cni</code> addon, which will be addressed later.`
+            },
+            {
+                phase: "2. EKS Cluster & Configuration",
+                title: "2.2. Install EBS CSI Driver Addon",
+                id: "install-ebs-csi-driver",
+                content: `
+                    <p class="mb-2">This addon allows EKS to manage EBS volumes for persistent storage. Ensure you use the correct cluster name (<code class="bg-slate-200 px-1 rounded">securiti-epod-cluster</code>).</p>
+                    <h4 class="font-medium text-slate-700 mb-1">Command:</h4>
+                `,
+                code: `eksctl create addon \\
+  --name aws-ebs-csi-driver \\
+  --cluster securiti-epod-cluster \\
+  --region us-west-2 \\
+  --force`,
+                notes: `You might receive a warning that recommended policies for <code>aws-ebs-csi-driver</code> cannot be configured because OIDC is disabled. This will be addressed.`
+            },
+            {
+                phase: "2. EKS Cluster & Configuration",
+                title: "2.3. Attach IAM Policy to Node Role",
+                id: "attach-iam-policy-node-role",
+                content: `
+                    <p class="mb-2">This step grants the necessary permissions for the EBS CSI driver to interact with AWS EBS.</p>
+                    <h4 class="font-medium text-slate-700 mb-1">Command:</h4>
+                `,
+                code: `NODE_ROLE_NAME=$(aws eks describe-nodegroup \\
+  --cluster-name securiti-epod-cluster \\
+  --nodegroup-name securiti-nodegroup \\
+  --region us-west-2 \\
+  --query 'nodegroup.nodeRole' \\
+  --output text | awk -F'/' '{print $2}')\\naws iam attach-role-policy \\
+  --role-name "$NODE_ROLE_NAME" \\
+  --policy-arn arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy`
+            },
+            {
+                phase: "2. EKS Cluster & Configuration",
+                title: "2.4. Enable OIDC Provider for vpc-cni",
+                id: "enable-oidc-vpc-cni",
+                content: `
+                    <p class="mb-2">To properly configure IAM for the <code>vpc-cni</code> addon, you need to enable the OIDC provider for your cluster.</p>
+                    <h4 class="font-medium text-slate-700 mb-1">Command:</h4>
+                `,
+                code: `eksctl utils associate-iam-oidc-provider \\
+  --region us-west-2 \\
+  --cluster securiti-epod-cluster \\
+  --approve`
+            },
+            {
+                phase: "2. EKS Cluster & Configuration",
+                title: "2.5. Create IAM Policy for vpc-cni",
+                id: "create-iam-policy-vpc-cni",
+                content: `
+                    <p class="mb-2">Download the AWS-managed policy and create an IAM policy for <code>vpc-cni</code>.</p>
+                    <h4 class="font-medium text-slate-700 mb-1">Commands:</h4>
+                `,
+                code: `curl -o vpc-cni-policy.json https://raw.githubusercontent.com/aws/amazon-vpc-cni-k8s/master/config/v1.12/iam_policy.json\\naws iam create-policy \\
+  --policy-name AmazonEKS_CNI_Policy \\
+  --policy-document file://vpc-cni-policy.json`
+            },
+            {
+                phase: "2. EKS Cluster & Configuration",
+                title: "2.6. Create IAM Role with Pod Identity",
+                id: "create-iam-role-pod-identity",
+                content: `
+                    <p class="mb-2">Create an IAM role associated with EKS Pod Identity for <code>vpc-cni</code>. Replace <span class="placeholder">&lt;YOUR_ACCOUNT_ID&gt;</span> with your actual AWS account ID.</p>
+                    <h4 class="font-medium text-slate-700 mb-1">Command:</h4>
+                `,
+                code: `eksctl create iamidentitymapping \\
+  --cluster securiti-epod-cluster \\
+  --region us-west-2 \\
+  --arn arn:aws:iam::<span class="placeholder">&lt;YOUR_ACCOUNT_ID&gt;</span>:role/AmazonEKS_CNI_Policy \\
+  --username system:node:{{EC2PrivateDNSName}} \\
+  --group system:bootstrappers,system:nodes`
+            },
+            {
+                phase: "2. EKS Cluster & Configuration",
+                title: "2.7. Update vpc-cni Addon with IAM Role",
+                id: "update-vpc-cni-addon",
+                content: `
+                    <p class="mb-2">Update the <code>vpc-cni</code> addon to associate it with the newly created IAM role.</p>
+                    <h4 class="font-medium text-slate-700 mb-1">Command:</h4>
+                `,
+                code: `eksctl update addon \\
+  --name vpc-cni \\
+  --cluster securiti-epod-cluster \\
+  --region us-west-2 \\
+  --force`
+            },
+            {
+                phase: "2. EKS Cluster & Configuration",
+                title: "2.8. Update kubeconfig",
+                id: "update-kubeconfig",
+                content: `
+                    <p class="mb-2">This command configures <code>kubectl</code> to connect to your new EKS cluster.</p>
+                    <h4 class="font-medium text-slate-700 mb-1">Command:</h4>
+                `,
+                code: `aws eks --region us-west-2 update-kubeconfig --name securiti-epod-cluster`
+            },
+            {
+                phase: "2. EKS Cluster & Configuration",
+                title: "2.9. Verify Cluster Access",
+                id: "verify-cluster-access",
+                content: `
+                    <p class="mb-2">Check if your nodes are ready.</p>
+                    <h4 class="font-medium text-slate-700 mb-1">Command:</h4>
+                `,
+                code: `kubectl get nodes`
+            },
+            {
+                phase: "3. Storage Class Setup",
+                title: "3.1. Create storage-class.yaml",
+                id: "create-storage-class-yaml",
+                content: `
+                    <p class="mb-2">This defines a storage class using the EBS CSI provisioner. Create a file named <code class="bg-slate-200 px-1 rounded">storage-class.yaml</code> with the following content:</p>
+                    <h4 class="font-medium text-slate-700 mb-1">Content for storage-class.yaml:</h4>
+                `,
+                code: `apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: ebs-sc
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "true"
+provisioner: ebs.csi.aws.com
+volumeBindingMode: WaitForFirstConsumer
+reclaimPolicy: Delete`
+            },
+            {
+                phase: "3. Storage Class Setup",
+                title: "3.2. Apply Storage Class",
+                id: "apply-storage-class",
+                content: `
+                    <p class="mb-2">Apply the created storage class to your cluster.</p>
+                    <h4 class="font-medium text-slate-700 mb-1">Command:</h4>
+                `,
+                code: `kubectl apply -f storage-class.yaml`
+            },
+            {
+                phase: "3. Storage Class Setup",
+                title: "3.3. Bind Storage Class (Optional)",
+                id: "bind-storage-class",
+                content: `
+                    <p class="mb-2">The <code>volumeBindingMode</code> for a StorageClass is immutable after creation. If you try to patch it to <code>Immediate</code> after creation with <code>WaitForFirstConsumer</code>, it will result in an error. <code>WaitForFirstConsumer</code> is generally recommended.</p>
+                    <h4 class="font-medium text-slate-700 mb-1">Command (Illustrative - may fail if already set):</h4>
+                `,
+                code: `# kubectl patch storageclass ebs-sc -p '{"volumeBindingMode":"Immediate"}'`,
+                notes: `This command will fail if volumeBindingMode is already set to WaitForFirstConsumer, which is the case from step 3.1.`
+            },
+            {
+                phase: "4. Helm & Securiti ePod V2 Deployment",
+                title: "4.1. Download Helm Chart",
+                id: "download-helm-chart",
+                content: `
+                    <p class="mb-2">Download the Securiti appliance Helm chart.</p>
+                    <h4 class="font-medium text-slate-700 mb-1">Command:</h4>
+                `,
+                code: `wget "https://privaci-registry.s3.us-west-2.amazonaws.com/artifacts/prod/securiti-appliance-chart-1.132.0-15rc.tar.gz" -O securiti-appliance-chart.tar.gz`
+            },
+            {
+                phase: "4. Helm & Securiti ePod V2 Deployment",
+                title: "4.2. Save values.yaml",
+                id: "save-values-yaml",
+                content: `
+                    <p class="mb-2">Create the <code class="bg-slate-200 px-1 rounded">values.yaml</code> file with the specified configuration for the Securiti appliance. Ensure you change <code class="bg-slate-200 px-1 rounded">CHANGEMEOROVERRIDEME</code> for the Redis password.</p>
+                    <h4 class="font-medium text-slate-700 mb-1">Content for values.yaml:</h4>
+                `,
+                code: `global:
+  registry: "app.securiti.ai"
+  privilegedContainers: false
+  custom_registry: "false"
+  appliance_install_type: byok
+  enableCertificateHandling: true
+  installation_location: "/mnt"
+  system_appliance: "false"
+  appliance_application_directory: "/securiti-app-securiti-ai"
+  namespace: "securiti-ai"
+  cloud_type: ""
+  appliance_byok: "true"
+  redis:
+    password: "<span class="placeholder">CHANGEMEOROVERRIDEME</span>"
+  externalRedis: false
+  externalEs: false
+tags:
+  redis: true
+  elasticsearch: true
+  prometheus: true
+  prometheus-node-exporter: false
+  metrics-server: true
+  kube-metrics-adapter: true
+  deployer-service: true
+ranger-policy-service:
+  httpsService:
+    nodePort: 31000
+  httpService:
+    nodePort: 31001
+redis:
+  metrics:
+    extraArgs:
+      check-keys: "db1=securiti-appliance-securiti-ai-downloader-tasks-queue"
+kube-metrics-adapter:
+  enableCustomMetricsApi: "true"
+  enableExternalMetricsApi: "true"
+prometheus:
+  serverFiles:
+    prometheus.yml:
+      scrape_configs:
+        - job_name: 'redis-metrics-server'
+          static_configs:
+            - targets:
+                - "{{ .Release.Name }}-redis-metrics.securiti-ai.svc.cluster.local:9121"
+  server:
+    resources:
+      limits: null
+    persistentVolume:
+      size: 8Gi`
+            },
+            {
+                phase: "4. Helm & Securiti ePod V2 Deployment",
+                title: "4.3. Install Helm",
+                id: "install-helm",
+                content: `
+                    <p class="mb-2">Install the Helm CLI.</p>
+                    <h4 class="font-medium text-slate-700 mb-1">Command:</h4>
+                `,
+                code: `curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash`
+            },
+            {
+                phase: "4. Helm & Securiti ePod V2 Deployment",
+                title: "4.4. Create Namespace",
+                id: "create-namespace",
+                content: `
+                    <p class="mb-2">The Helm installation requires the <code class="bg-slate-200 px-1 rounded">securiti-ai</code> namespace to exist.</p>
+                    <h4 class="font-medium text-slate-700 mb-1">Command:</h4>
+                `,
+                code: `kubectl create namespace securiti-ai`
+            },
+            {
+                phase: "4. Helm & Securiti ePod V2 Deployment",
+                title: "4.5. Patch Existing ClusterRole",
+                id: "patch-clusterrole",
+                content: `
+                    <p class="mb-2">Helm may encounter an error if a <code>ClusterRole</code> (e.g., <code class="bg-slate-200 px-1 rounded">system:metrics-server-aggregated-reader</code>) already exists and isn't managed by Helm. To resolve this, patch the existing <code>ClusterRole</code> with Helm-compatible metadata.</p>
+                    <h4 class="font-medium text-slate-700 mb-1">Commands:</h4>
+                `,
+                code: `kubectl label clusterrole system:metrics-server-aggregated-reader \\
+  app.kubernetes.io/managed-by=Helm --overwrite
+
+kubectl annotate clusterrole system:metrics-server-aggregated-reader \\
+  meta.helm.sh/release-name=priv-appliance \\
+  meta.helm.sh/release-namespace=securiti-ai --overwrite`
+            },
+            {
+                phase: "4. Helm & Securiti ePod V2 Deployment",
+                title: "4.6. Patch Existing APIService",
+                id: "patch-apiservice",
+                content: `
+                    <p class="mb-2">Similarly, if the <code>APIService</code> (e.g., <code class="bg-slate-200 px-1 rounded">v1beta1.metrics.k8s.io</code>) exists and isn't Helm-managed, patch it.</p>
+                    <h4 class="font-medium text-slate-700 mb-1">Commands:</h4>
+                `,
+                code: `kubectl label apiservice v1beta1.metrics.k8s.io \\
+  app.kubernetes.io/managed-by=Helm --overwrite
+
+kubectl annotate apiservice v1beta1.metrics.k8s.io \\
+  meta.helm.sh/release-name=priv-appliance \\
+  meta.helm.sh/release-namespace=securiti-ai --overwrite`
+            },
+            {
+                phase: "4. Helm & Securiti ePod V2 Deployment",
+                title: "4.7. Deploy Securiti ePod V2 Helm Chart",
+                id: "deploy-securiti-helm-chart",
+                content: `
+                    <p class="mb-2">Install or upgrade the Securiti appliance using Helm. Replace <span class="placeholder">&lt;YOUR_BASE64_ENCODED_LICENSE_KEY&gt;</span> with your actual license key.</p>
+                    <h4 class="font-medium text-slate-700 mb-1">Command:</h4>
+                `,
+                code: `helm upgrade -n securiti-ai --install priv-appliance securiti-appliance-chart.tar.gz -f values.yaml \\
+  --timeout=900s \\
+  --create-namespace \\
+  --set global.license="<span class="placeholder">&lt;YOUR_BASE64_ENCODED_LICENSE_KEY&gt;</span>"`,
+                notes: `The <code>--create-namespace</code> flag is included for robustness, though the namespace was manually created in step 4.4. The chart file used is <code>securiti-appliance-chart.tar.gz</code> as downloaded.`
+            },
+            {
+                phase: "5. Verification & Registration",
+                title: "5.1. Verify Installation",
+                id: "verify-installation",
+                content: `
+                    <p class="mb-2">Check the status of your pods in the <code class="bg-slate-200 px-1 rounded">securiti-ai</code> namespace.</p>
+                    <h4 class="font-medium text-slate-700 mb-1">Command:</h4>
+                `,
+                code: `kubectl get pods -n securiti-ai`
+            },
+            {
+                phase: "5. Verification & Registration",
+                title: "5.2. Register Securiti Appliance",
+                id: "register-securiti-appliance",
+                content: `
+                    <p class="mb-2">Register your Securiti appliance using the <code>securitictl</code> command. Replace <span class="placeholder">&lt;YOUR_BASE64_ENCODED_LICENSE_KEY&gt;</span> with your actual license key.</p>
+                    <h4 class="font-medium text-slate-700 mb-1">Command:</h4>
+                `,
+                code: `kubectl -n securiti-ai exec -it deploy/priv-appliance-config-controller -- securitictl register -l "<span class="placeholder">&lt;YOUR_BASE64_ENCODED_LICENSE_KEY&gt;</span>"`
+            }
+        ];
+
+        const stepNavigation = document.getElementById('step-navigation');
+        const stepContent = document.getElementById('step-content');
+        const menuToggle = document.getElementById('menu-toggle');
+        const sidebar = document.getElementById('sidebar');
+        let currentStepId = 'intro';
+
+        function buildNavigation() {
+            const phases = {};
+            stepsData.forEach(step => {
+                if (!phases[step.phase]) {
+                    phases[step.phase] = [];
+                }
+                phases[step.phase].push(step);
+            });
+
+            for (const phaseName in phases) {
+                const phaseDiv = document.createElement('div');
+                phaseDiv.className = 'mb-4';
+                
+                const phaseTitle = document.createElement('h3');
+                phaseTitle.className = 'text-md font-semibold text-slate-600 mb-1.5 pl-1';
+                phaseTitle.textContent = phaseName;
+                phaseDiv.appendChild(phaseTitle);
+
+                const ul = document.createElement('ul');
+                ul.className = 'space-y-1';
+                phases[phaseName].forEach(step => {
+                    const li = document.createElement('li');
+                    const button = document.createElement('button');
+                    button.className = 'w-full text-left px-3 py-1.5 text-sm rounded-md transition-colors duration-150';
+                    // Fix: Add classes individually or split and spread
+                    if (step.id === currentStepId) {
+                        button.classList.add('bg-sky-100', 'text-sky-700', 'font-medium');
+                    } else {
+                        button.classList.add('hover:bg-slate-100', 'text-slate-700');
+                    }
+                    button.textContent = step.title;
+                    button.dataset.stepId = step.id;
+                    button.onclick = () => loadStep(step.id);
+                    li.appendChild(button);
+                    ul.appendChild(li);
+                });
+                phaseDiv.appendChild(ul);
+                stepNavigation.appendChild(phaseDiv);
+            }
+        }
+        
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.remove('opacity-0');
+            setTimeout(() => {
+                toast.classList.add('opacity-0');
+            }, 2000);
+        }
+
+        function copyToClipboard(text, button) {
+            // Create a temporary textarea element
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showToast('Copied to clipboard!');
+                const originalText = button.textContent;
+                button.textContent = 'Copied!';
+                setTimeout(() => {
+                    button.textContent = originalText;
+                }, 2000);
+            } catch (err) {
+                showToast('Failed to copy!');
+                console.error('Failed to copy text: ', err);
+            }
+            document.body.removeChild(textarea);
+        }
+
+        function loadStep(stepId) {
+            const step = stepsData.find(s => s.id === stepId);
+            if (!step) {
+                stepContent.innerHTML = '<p class="text-red-500">Step not found.</p>';
+                return;
+            }
+
+            currentStepId = stepId;
+            let htmlContent = `<h2 class="text-2xl font-semibold text-sky-700 mb-4">${step.title}</h2>`;
+            htmlContent += step.content;
+
+            if (step.code) {
+                const codeBlockId = `code-${step.id}`;
+                // For display, replace newlines with <br>, but for copying, keep newlines.
+                // The actual newlines are preserved in the copyToClipboard function by passing step.code directly.
+                // The .replace for placeholder is for visual highlighting in the code block.
+                const displayCode = step.code.replace(/<span class="placeholder">([^<]+)<\/span>/g, '<span class="placeholder">$1</span>');
+
+                htmlContent += `
+                    <div class="code-block my-4">
+                        <button class="copy-button" data-code-id="${codeBlockId}">Copy</button>
+                        <pre><code id="${codeBlockId}">${displayCode}</code></pre>
+                    </div>
+                `;
+            }
+
+            if (step.notes) {
+                htmlContent += `
+                    <div class="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-md">
+                        <h4 class="font-medium text-amber-700 mb-1">Note:</h4>
+                        <p class="text-sm text-amber-600">${step.notes}</p>
+                    </div>
+                `;
+            }
+            
+            stepContent.innerHTML = htmlContent;
+            
+            // Add event listeners for copy buttons
+            document.querySelectorAll('.copy-button').forEach(button => {
+                button.onclick = () => {
+                    // Find the original code from stepsData to ensure correct newline handling for copy
+                    const originalStepData = stepsData.find(s => `code-${s.id}` === button.dataset.codeId);
+                    if (originalStepData && originalStepData.code) {
+                         // Strip HTML tags (like span for placeholder) before copying
+                        const plainTextCode = originalStepData.code.replace(/<[^>]*>/g, '');
+                        copyToClipboard(plainTextCode, button);
+                    }
+                };
+            });
+
+            // Update navigation active state
+            document.querySelectorAll('#step-navigation button').forEach(btn => {
+                // Remove all active/hover classes first
+                btn.classList.remove('bg-sky-100', 'text-sky-700', 'font-medium', 'hover:bg-slate-100', 'text-slate-700');
+
+                if (btn.dataset.stepId === stepId) {
+                    btn.classList.add('bg-sky-100', 'text-sky-700', 'font-medium');
+                } else {
+                    btn.classList.add('hover:bg-slate-100', 'text-slate-700');
+                }
+            });
+
+            // Scroll to top of content area
+            document.getElementById('main-content').scrollTop = 0;
+
+            // If on mobile, close sidebar after selection
+            if (window.innerWidth < 768) {
+                sidebar.classList.add('-translate-x-full');
+            }
+        }
+
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('-translate-x-full');
+        });
+        
+        // Close sidebar if clicking outside on mobile
+        document.addEventListener('click', (event) => {
+            if (!sidebar.contains(event.target) && !menuToggle.contains(event.target) && window.innerWidth < 768 && !sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.add('-translate-x-full');
+            }
+        });
+
+
+        // Initial load
+        buildNavigation();
+        loadStep(currentStepId); // Load the intro step by default
+
+    </script>
+</body>
+</html>
