@@ -1,95 +1,240 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Car on Road</title>
-  <style>
-    :root {
-      --car-image-url: 'https://via.placeholder.com/100x200.png?text=Hot+Car';
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hot Wheels Track Simulator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for the canvas and overall layout */
+        body {
+            font-family: "Inter", sans-serif;
+            background-color: #1a202c; /* Dark background */
+            overflow: hidden; /* Prevent scrolling */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh; /* Full viewport height */
+            margin: 0;
+            padding: 0;
+        }
+        canvas {
+            background-color: #333; /* Dark grey road */
+            display: block;
+            border-radius: 1rem; /* Rounded corners for the canvas */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            touch-action: none; /* Prevent default touch actions like scrolling/zooming */
+        }
+        .hotwheels-area {
+            position: absolute;
+            bottom: 5%; /* Position near the bottom of the screen */
+            left: 50%;
+            /* No rotation on the element itself, just adjust dimensions */
+            transform: translateX(-50%); /* Only center horizontally */
+            width: 80px; /* Narrower width */
+            height: 150px; /* Taller height */
+            border: 3px dashed rgba(255, 255, 255, 0.5); /* Dashed border for visual cue */
+            border-radius: 0.75rem; /* Rounded corners */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            text-align: center;
+            pointer-events: none; /* Allow clicks/touches to pass through to canvas */
+            z-index: 10; /* Ensure it's above the canvas */
+            background-color: rgba(0, 0, 0, 0.2); /* Slightly transparent background */
+            padding: 0.5rem;
+        }
 
-    body, html {
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      background: black;
-    }
+        /* Speed slider styling */
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 80%; /* Adjust width as needed */
+            max-width: 300px;
+            height: 8px;
+            background: #d3d3d3;
+            outline: none;
+            opacity: 0.7;
+            transition: opacity .2s;
+            border-radius: 4px;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+        }
 
-    .road {
-      width: 100vw;
-      height: 100vh;
-      position: relative;
-      background-color: black;
-    }
+        input[type="range"]:hover {
+            opacity: 1;
+        }
 
-    .left-line, .right-line {
-      position: absolute;
-      top: 0;
-      width: 5px;
-      height: 100%;
-      background: yellow;
-    }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #4CAF50; /* Green thumb */
+            cursor: pointer;
+            border-radius: 50%;
+            box-shadow: 0 0 5px rgba(0,0,0,0.3);
+        }
 
-    .left-line { left: 5vw; }
-    .right-line { right: 5vw; }
-
-    .center-line {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      top: 0;
-      width: 5px;
-      height: 100%;
-      background: repeating-linear-gradient(
-        yellow 0px, yellow 30px,
-        black 30px, black 60px
-      );
-      animation: dash 0.5s linear infinite;
-    }
-
-    @keyframes dash {
-      from { background-position: 0 0; }
-      to { background-position: 0 60px; }
-    }
-
-    .car {
-      position: absolute;
-      bottom: 20%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100px;
-      height: 200px;
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center;
-    }
-  </style>
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #4CAF50;
+            cursor: pointer;
+            border-radius: 50%;
+            box-shadow: 0 0 5px rgba(0,0,0,0.3);
+        }
+    </style>
 </head>
-<body>
-  <div class="road">
-    <div class="left-line"></div>
-    <div class="right-line"></div>
-    <div class="center-line"></div>
-  </div>
+<body class="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white p-4">
+    <h1 class="text-3xl md:text-4xl font-bold mb-4 text-green-400">Hot Wheels Track Simulator</h1>
 
-  <div class="car" id="car"></div>
+    <div class="relative w-full max-w-4xl flex justify-center items-center">
+        <canvas id="trackCanvas"></canvas>
+        <div class="hotwheels-area">
+            Place your Hot Wheels car here!
+        </div>
+    </div>
 
-  <script>
-    const carElement = document.getElementById("car");
+    <div class="flex flex-col items-center mt-4">
+        <label for="speedSlider" class="text-lg mb-2">Speed: <span id="speedValue">50</span></label>
+        <input type="range" id="speedSlider" min="10" max="200" value="50" class="w-64 md:w-80">
+    </div>
 
-    // Try loading car image
-    const image = new Image();
-    image.src = getComputedStyle(document.documentElement).getPropertyValue('--car-image-url').replace(/['"]/g, '').trim();
+    <script>
+        // Get the canvas element and its 2D rendering context
+        const canvas = document.getElementById('trackCanvas');
+        const ctx = canvas.getContext('2d');
 
-    image.onload = () => {
-      carElement.style.backgroundImage = `url('${image.src}')`;
-    };
+        // Get the speed slider and its value display
+        const speedSlider = document.getElementById('speedSlider');
+        const speedValueSpan = document.getElementById('speedValue');
 
-    image.onerror = () => {
-      // If image fails, use fallback
-      carElement.style.backgroundImage = "url('https://via.placeholder.com/100x200.png?text=Car')";
-    };
-  </script>
+        // Track properties
+        let lineSpeed = parseFloat(speedSlider.value) / 10; // Initial speed, adjusted for smoother animation
+        const edgeLineColor = '#FFFFFF'; // White solid lines
+        const centerLineColor = '#FFFF00'; // Yellow dashed line
+        const edgeLineWidth = 8;
+        const centerLineWidth = 4;
+        const dashLength = 30;
+        const gapLength = 20;
+
+        // Array to store the y-coordinates of the center dashes
+        let centerDashes = [];
+        let animationFrameId;
+
+        // Function to initialize or resize the canvas
+        function setupCanvas() {
+            // Set canvas dimensions based on parent container
+            const container = canvas.parentElement;
+            canvas.width = container.clientWidth * 0.9; // 90% of container width
+            canvas.height = window.innerHeight * 0.7; // 70% of viewport height
+
+            // Ensure minimum dimensions for small screens
+            if (canvas.width < 300) canvas.width = 300;
+            if (canvas.height < 400) canvas.height = 400;
+
+            // Recalculate initial dash positions based on new height
+            centerDashes = [];
+            let currentY = 0;
+            while (currentY < canvas.height + dashLength) {
+                centerDashes.push(currentY);
+                currentY += (dashLength + gapLength);
+            }
+        }
+
+        // Function to draw the track
+        function draw() {
+            // Clear the entire canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw the road background (already set by canvas background-color in CSS)
+            // ctx.fillStyle = '#333';
+            // ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Calculate track width for perspective
+            // Track is wider at the bottom (closer to viewer) and narrower at the top
+            const trackWidthBottom = canvas.width; // Track now starts at full screen width
+            const trackWidthTop = canvas.width * 0.3;   // Adjusted to 30% for a less aggressive narrowing
+
+            // Calculate x-coordinates for the track edges
+            const bottomLeftX = (canvas.width - trackWidthBottom) / 2; // This will be 0
+            const bottomRightX = bottomLeftX + trackWidthBottom;       // This will be canvas.width
+            const topLeftX = (canvas.width - trackWidthTop) / 2;
+            const topRightX = topLeftX + trackWidthTop;
+
+            // Draw solid edge lines
+            ctx.strokeStyle = edgeLineColor;
+            ctx.lineWidth = edgeLineWidth;
+
+            // Left edge
+            ctx.beginPath();
+            ctx.moveTo(bottomLeftX, canvas.height);
+            ctx.lineTo(topLeftX, 0);
+            ctx.stroke();
+
+            // Right edge
+            ctx.beginPath();
+            ctx.moveTo(bottomRightX, canvas.height);
+            ctx.lineTo(topRightX, 0);
+            ctx.stroke();
+
+            // Draw moving center dashed line
+            ctx.strokeStyle = centerLineColor;
+            ctx.lineWidth = centerLineWidth;
+
+            // Loop through each dash
+            for (let i = 0; i < centerDashes.length; i++) {
+                // Update dash position
+                centerDashes[i] += lineSpeed;
+
+                // Wrap around if dash moves off the bottom of the screen
+                if (centerDashes[i] > canvas.height + gapLength) {
+                    centerDashes[i] -= (dashLength + gapLength) * centerDashes.length; // Move to top
+                }
+
+                // Calculate x-coordinate for the center of the dash, considering perspective
+                // Linear interpolation between top and bottom track widths
+                const yRatio = centerDashes[i] / canvas.height;
+                const currentTrackWidthAtY = trackWidthTop + (trackWidthBottom - trackWidthTop) * (1 - yRatio);
+                const centerXAtY = (canvas.width - currentTrackWidthAtY) / 2 + (currentTrackWidthAtY / 2);
+
+                // Draw the dash segment
+                ctx.beginPath();
+                ctx.moveTo(centerXAtY, centerDashes[i]);
+                ctx.lineTo(centerXAtY, centerDashes[i] + dashLength);
+                ctx.stroke();
+            }
+        }
+
+        // Animation loop
+        function animate() {
+            draw();
+            animationFrameId = requestAnimationFrame(animate);
+        }
+
+        // Event listener for window resize
+        window.addEventListener('resize', () => {
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId); // Stop current animation
+            }
+            setupCanvas(); // Re-setup canvas dimensions
+            animate(); // Start new animation loop
+        });
+
+        // Event listener for speed slider change
+        speedSlider.addEventListener('input', (event) => {
+            lineSpeed = parseFloat(event.target.value) / 10; // Adjust speed
+            speedValueSpan.textContent = event.target.value; // Update displayed value
+        });
+
+        // Initial setup and start animation when the window loads
+        window.onload = function() {
+            setupCanvas();
+            animate();
+        };
+    </script>
 </body>
 </html>
