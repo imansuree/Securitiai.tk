@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hot Wheels Fullscreen Track Simulator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Essential for fullscreen layout */
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Prevent scrolling */
+        }
+        body {
+            font-family: "Inter", sans-serif;
+            background-color: #1a202c; /* Dark background will now be completely covered by track */
+            position: relative; /* For absolute positioning of children */
+        }
+        canvas {
+            background-color: #333; /* Dark grey road */
+            display: block;
+            position: absolute; /* Position to fill parent body */
+            top: 0;
+            left: 0;
+            /* No border-radius or shadow here as it's full screen */
+            touch-action: none; /* Prevent default touch actions like scrolling/zooming */
+        }
+        .hotwheels-area {
+            position: absolute;
+            bottom: 5%; /* Position near the bottom of the screen */
+            left: 50%;
+            transform: translateX(-50%); /* Only center horizontally */
+            width: 80px; /* Narrower width */
+            height: 150px; /* Taller height */
+            border: 3px dashed rgba(255, 255, 255, 0.5); /* Dashed border for visual cue */
+            border-radius: 0.75rem; /* Rounded corners */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            text-align: center;
+            pointer-events: none; /* Allow clicks/touches to pass through to canvas */
+            z-index: 10; /* Ensure it's above the canvas */
+            background-color: rgba(0, 0, 0, 0.2); /* Slightly transparent background */
+            padding: 0.5rem;
+        }
+
+        /* Speed slider styling */
+        .speed-control-container {
+            position: absolute;
+            bottom: 2%; /* Position at the bottom of the screen */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 20; /* Ensure it's above the canvas and hotwheels area */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background for readability */
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 150px; /* Compact width for slider */
+            height: 8px;
+            background: #d3d3d3;
+            outline: none;
+            opacity: 0.7;
+            transition: opacity .2s;
+            border-radius: 4px;
+            margin-top: 0.5rem; /* Reduced margin */
+        }
+
+        input[type="range"]:hover {
+            opacity: 1;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #4CAF50; /* Green thumb */
+            cursor: pointer;
+            border-radius: 50%;
+            box-shadow: 0 0 5px rgba(0,0,0,0.3);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #4CAF50;
+            cursor: pointer;
+            border-radius: 50%;
+            box-shadow: 0 0 5px rgba(0,0,0,0.3);
+        }
+        
+        /* Hidden H1 - Keeping it for semantic structure but visually hiding */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        /* Commentary Modal Styles */
+        .commentary-modal {
+            position: fixed; /* Fixed position relative to viewport */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.85);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            color: white;
+            text-align: center;
+            max-width: 80%;
+            z-index: 100; /* Ensure it's on top of everything */
+            display: none; /* Hidden by default */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translate(-50%, -60%); }
+            to { opacity: 1; transform: translate(-50%, -50%); }
+        }
+
+        .commentary-modal.show {
+            display: flex;
+        }
+
+        .commentary-modal-content {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+
+        .commentary-close-button {
+            @apply px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ease-in-out;
+            @apply bg-red-500 text-white hover:bg-red-600;
+            cursor: pointer;
+        }
+
+        .loading-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #4CAF50;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Race Commentary Button */
+        .race-commentary-button {
+            @apply px-5 py-2 rounded-full text-base font-semibold transition-all duration-300 ease-in-out;
+            @apply bg-purple-600 text-white shadow-md hover:bg-purple-700 hover:shadow-lg;
+            margin-top: 1rem; /* Space between slider and button */
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Sound Control Button */
+        .sound-control-button {
+            @apply px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ease-in-out;
+            @apply bg-blue-500 text-white shadow-md hover:bg-blue-600 hover:shadow-lg;
+            margin-top: 0.75rem; /* Space between buttons */
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="sr-only">Hot Wheels Fullscreen Track Simulator</h1>
+
+    <canvas id="trackCanvas"></canvas>
+
+    <div class="hotwheels-area">
+        Place your Hot Wheels car here!
+    </div>
+
+    <div class="speed-control-container">
+        <label for="speedSlider" class="text-base">Speed: <span id="speedValue">50</span></label>
+        <input type="range" id="speedSlider" min="10" max="200" value="50">
+        <button id="getCommentaryButton" class="race-commentary-button">
+            Get Race Commentary ✨
+        </button>
+        <button id="toggleSoundButton" class="sound-control-button">
+            Toggle Sound 🔊
+        </button>
+    </div>
+
+    <audio id="carSound" loop preload="auto">
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <div id="commentaryModal" class="commentary-modal">
+        <div id="loadingSpinner" class="loading-spinner hidden"></div>
+        <div id="commentaryContent" class="commentary-modal-content"></div>
+        <button id="closeCommentaryButton" class="commentary-close-button">Close</button>
+    </div>
+
+    <script>
+        // Get the canvas element and its 2D rendering context
+        const canvas = document.getElementById('trackCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Get the speed slider and its value display
+        const speedSlider = document.getElementById('speedSlider');
+        const speedValueSpan = document.getElementById('speedValue');
+
+        // Get commentary UI elements
+        const getCommentaryButton = document.getElementById('getCommentaryButton');
+        const commentaryModal = document.getElementById('commentaryModal');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const commentaryContent = document.getElementById('commentaryContent');
+        const closeCommentaryButton = document.getElementById('closeCommentaryButton');
+
+        // Get audio elements
+        const carSound = document.getElementById('carSound');
+        const toggleSoundButton = document.getElementById('toggleSoundButton');
+        let isSoundPlaying = false; // Track sound state
+
+        // Track properties
+        let lineSpeed = parseFloat(speedSlider.value) / 10; // Initial speed, adjusted for smoother animation
+        const edgeLineColor = '#FFFFFF'; // White solid lines
+        const centerLineColor = '#FFFF00'; // Yellow dashed line
+        const edgeLineWidth = 8;
+        const centerLineWidth = 4;
+        const dashLength = 30;
+        const gapLength = 20;
+
+        // Array to store the y-coordinates of the center dashes
+        let centerDashes = [];
+        let animationFrameId;
+
+        // Function to initialize or resize the canvas
+        function setupCanvas() {
+            // Set canvas dimensions to fill the entire window
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            // Recalculate initial dash positions based on new height
+            centerDashes = [];
+            let currentY = 0;
+            while (currentY < canvas.height + dashLength) {
+                centerDashes.push(currentY);
+                currentY += (dashLength + gapLength);
+            }
+        }
+
+        // Function to draw the track
+        function draw() {
+            // Clear the entire canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Calculate track width for a consistent width
+            const trackWidth = canvas.width * 0.6; // Example: 60% of canvas width for the track
+
+            // Calculate x-coordinates for the track edges (straight lines)
+            const leftEdgeX = (canvas.width - trackWidth) / 2;
+            const rightEdgeX = leftEdgeX + trackWidth;
+
+            // Draw solid edge lines
+            ctx.strokeStyle = edgeLineColor;
+            ctx.lineWidth = edgeLineWidth;
+
+            // Left edge (straight vertical line)
+            ctx.beginPath();
+            ctx.moveTo(leftEdgeX, canvas.height);
+            ctx.lineTo(leftEdgeX, 0);
+            ctx.stroke();
+
+            // Right edge (straight vertical line)
+            ctx.beginPath();
+            ctx.moveTo(rightEdgeX, canvas.height);
+            ctx.lineTo(rightEdgeX, 0);
+            ctx.stroke();
+
+            // Draw moving center dashed line
+            ctx.strokeStyle = centerLineColor;
+            ctx.lineWidth = centerLineWidth;
+
+            // Loop through each dash
+            for (let i = 0; i < centerDashes.length; i++) {
+                // Update dash position
+                centerDashes[i] += lineSpeed;
+
+                // Wrap around if dash moves off the bottom of the screen
+                if (centerDashes[i] > canvas.height + gapLength) {
+                    centerDashes[i] -= (dashLength + gapLength) * centerDashes.length; // Move to top
+                }
+
+                // Center X for the dash (constant for straight track)
+                const centerX = canvas.width / 2;
+
+                // Draw the dash segment
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerDashes[i]);
+                ctx.lineTo(centerX, centerDashes[i] + dashLength);
+                ctx.stroke();
+            }
+        }
+
+        // Animation loop
+        function animate() {
+            draw();
+            animationFrameId = requestAnimationFrame(animate);
+        }
+
+        // --- Gemini API Integration ---
+        async function getRaceCommentary() {
+            commentaryModal.classList.add('show');
+            loadingSpinner.classList.remove('hidden');
+            commentaryContent.textContent = ''; // Clear previous content
+            getCommentaryButton.disabled = true; // Disable button while loading
+
+            let chatHistory = [];
+            const prompt = `Generate a short, exciting race commentary (around 30-50 words) for a simple, straight car track simulator. Focus on the feeling of speed, the continuous motion, and the immersive experience. Make it sound like a live commentator.`;
+            chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+
+            const payload = { contents: chatHistory };
+            const apiKey = ""; // Canvas will automatically provide this
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const result = await response.json();
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    commentaryContent.textContent = text;
+                } else {
+                    commentaryContent.textContent = "Could not generate commentary. Please try again.";
+                    console.error("Unexpected API response structure:", result);
+                }
+            } catch (error) {
+                commentaryContent.textContent = "Failed to fetch commentary. " + error.message;
+                console.error("Error fetching commentary:", error);
+            } finally {
+                loadingSpinner.classList.add('hidden');
+                getCommentaryButton.disabled = false; // Re-enable button
+            }
+        }
+
+        // --- Sound Control Functions ---
+        function playCarSound() {
+            if (carSound.paused) {
+                carSound.play().catch(e => console.error("Error playing sound:", e));
+                isSoundPlaying = true;
+                toggleSoundButton.textContent = 'Toggle Sound 🔇';
+            }
+        }
+
+        function pauseCarSound() {
+            if (!carSound.paused) {
+                carSound.pause();
+                isSoundPlaying = false;
+                toggleSoundButton.textContent = 'Toggle Sound 🔊';
+            }
+        }
+
+        function updateSoundVolume() {
+            // Map speed slider value (10-200) to volume (0-1)
+            // Min speed (10) will be 0.1 volume, Max speed (200) will be 1.0 volume
+            const minSpeed = 10;
+            const maxSpeed = 200;
+            const minVolume = 0.1;
+            const maxVolume = 1.0;
+
+            const speedRange = maxSpeed - minSpeed;
+            const volumeRange = maxVolume - minVolume;
+
+            const normalizedSpeed = (parseFloat(speedSlider.value) - minSpeed) / speedRange;
+            carSound.volume = minVolume + (normalizedSpeed * volumeRange);
+        }
+
+        // --- Event Listeners ---
+
+        // Event listener for window resize
+        window.addEventListener('resize', () => {
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId); // Stop current animation
+            }
+            setupCanvas(); // Re-setup canvas dimensions
+            animate(); // Start new animation loop
+        });
+
+        // Event listener for speed slider change
+        speedSlider.addEventListener('input', (event) => {
+            lineSpeed = parseFloat(event.target.value) / 10; // Adjust speed
+            speedValueSpan.textContent = event.target.value; // Update displayed value
+            updateSoundVolume(); // Update sound volume based on new speed
+            // Only try to play sound if it's currently paused and speed is not zero
+            if (!isSoundPlaying && lineSpeed > 0) {
+                playCarSound();
+            } else if (isSoundPlaying && lineSpeed === 0) { // If sound is playing but speed is zero
+                pauseCarSound(); // Pause sound
+            }
+        });
+
+        // Event listener for Get Race Commentary button
+        getCommentaryButton.addEventListener('click', getRaceCommentary);
+
+        // Event listener for Close Commentary button
+        closeCommentaryButton.addEventListener('click', () => {
+            commentaryModal.classList.remove('show');
+        });
+
+        // Event listener for Toggle Sound button
+        toggleSoundButton.addEventListener('click', () => {
+            if (isSoundPlaying) {
+                pauseCarSound();
+            } else {
+                playCarSound();
+            }
+        });
+
+        // Initial setup and start animation when the window loads
+        window.onload = function() {
+            setupCanvas();
+            animate();
+            updateSoundVolume(); // Set initial volume
+        };
+    </script>
+</body>
+</html>
