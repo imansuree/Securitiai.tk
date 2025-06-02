@@ -53,8 +53,9 @@
         .speed-control-container {
             position: absolute;
             bottom: 2%; /* Position at the bottom of the screen */
-            left: 50%;
-            transform: translateX(-50%);
+            right: 2%; /* Moved to the right edge */
+            left: auto; /* Remove left positioning */
+            transform: none; /* Remove horizontal centering transform */
             z-index: 20; /* Ensure it's above the canvas and hotwheels area */
             display: flex;
             flex-direction: column;
@@ -115,74 +116,6 @@
             border-width: 0;
         }
 
-        /* Commentary Modal Styles */
-        .commentary-modal {
-            position: fixed; /* Fixed position relative to viewport */
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: rgba(0, 0, 0, 0.85);
-            padding: 1.5rem;
-            border-radius: 1rem;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-            color: white;
-            text-align: center;
-            max-width: 80%;
-            z-index: 100; /* Ensure it's on top of everything */
-            display: none; /* Hidden by default */
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            animation: fadeIn 0.3s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translate(-50%, -60%); }
-            to { opacity: 1; transform: translate(-50%, -50%); }
-        }
-
-        .commentary-modal.show {
-            display: flex;
-        }
-
-        .commentary-modal-content {
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
-            line-height: 1.5;
-        }
-
-        .commentary-close-button {
-            @apply px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ease-in-out;
-            @apply bg-red-500 text-white hover:bg-red-600;
-            cursor: pointer;
-        }
-
-        .loading-spinner {
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-top: 4px solid #4CAF50;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin-bottom: 1rem;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Race Commentary Button */
-        .race-commentary-button {
-            @apply px-5 py-2 rounded-full text-base font-semibold transition-all duration-300 ease-in-out;
-            @apply bg-purple-600 text-white shadow-md hover:bg-purple-700 hover:shadow-lg;
-            margin-top: 1rem; /* Space between slider and button */
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
         /* Sound Control Button */
         .sound-control-button {
             @apply px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ease-in-out;
@@ -204,24 +137,17 @@
     <div class="speed-control-container">
         <label for="speedSlider" class="text-base">Speed: <span id="speedValue">50</span></label>
         <input type="range" id="speedSlider" min="10" max="200" value="50">
-        <button id="getCommentaryButton" class="race-commentary-button">
-            Get Race Commentary ✨
-        </button>
         <button id="toggleSoundButton" class="sound-control-button">
             Toggle Sound 🔊
         </button>
     </div>
 
     <audio id="carSound" loop preload="auto">
+        <!-- Paw Patrol theme song placeholder.
+             Please replace this URL with an actual, legally sourced Paw Patrol theme song MP3 if you have one. -->
         <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
-
-    <div id="commentaryModal" class="commentary-modal">
-        <div id="loadingSpinner" class="loading-spinner hidden"></div>
-        <div id="commentaryContent" class="commentary-modal-content"></div>
-        <button id="closeCommentaryButton" class="commentary-close-button">Close</button>
-    </div>
 
     <script>
         // Get the canvas element and its 2D rendering context
@@ -231,13 +157,6 @@
         // Get the speed slider and its value display
         const speedSlider = document.getElementById('speedSlider');
         const speedValueSpan = document.getElementById('speedValue');
-
-        // Get commentary UI elements
-        const getCommentaryButton = document.getElementById('getCommentaryButton');
-        const commentaryModal = document.getElementById('commentaryModal');
-        const loadingSpinner = document.getElementById('loadingSpinner');
-        const commentaryContent = document.getElementById('commentaryContent');
-        const closeCommentaryButton = document.getElementById('closeCommentaryButton');
 
         // Get audio elements
         const carSound = document.getElementById('carSound');
@@ -331,52 +250,6 @@
             animationFrameId = requestAnimationFrame(animate);
         }
 
-        // --- Gemini API Integration ---
-        async function getRaceCommentary() {
-            commentaryModal.classList.add('show');
-            loadingSpinner.classList.remove('hidden');
-            commentaryContent.textContent = ''; // Clear previous content
-            getCommentaryButton.disabled = true; // Disable button while loading
-
-            let chatHistory = [];
-            const prompt = `Generate a short, exciting race commentary (around 30-50 words) for a simple, straight car track simulator. Focus on the feeling of speed, the continuous motion, and the immersive experience. Make it sound like a live commentator.`;
-            chatHistory.push({ role: "user", parts: [{ text: prompt }] });
-
-            const payload = { contents: chatHistory };
-            const apiKey = ""; // Canvas will automatically provide this
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-
-            try {
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const result = await response.json();
-
-                if (result.candidates && result.candidates.length > 0 &&
-                    result.candidates[0].content && result.candidates[0].content.parts &&
-                    result.candidates[0].content.parts.length > 0) {
-                    const text = result.candidates[0].content.parts[0].text;
-                    commentaryContent.textContent = text;
-                } else {
-                    commentaryContent.textContent = "Could not generate commentary. Please try again.";
-                    console.error("Unexpected API response structure:", result);
-                }
-            } catch (error) {
-                commentaryContent.textContent = "Failed to fetch commentary. " + error.message;
-                console.error("Error fetching commentary:", error);
-            } finally {
-                loadingSpinner.classList.add('hidden');
-                getCommentaryButton.disabled = false; // Re-enable button
-            }
-        }
-
         // --- Sound Control Functions ---
         function playCarSound() {
             if (carSound.paused) {
@@ -390,7 +263,7 @@
             if (!carSound.paused) {
                 carSound.pause();
                 isSoundPlaying = false;
-                toggleSoundButton.textContent = 'Toggle Sound 🔊';
+                toggleSoundButton.textContent = 'Toggle Sound �';
             }
         }
 
@@ -433,14 +306,6 @@
             }
         });
 
-        // Event listener for Get Race Commentary button
-        getCommentaryButton.addEventListener('click', getRaceCommentary);
-
-        // Event listener for Close Commentary button
-        closeCommentaryButton.addEventListener('click', () => {
-            commentaryModal.classList.remove('show');
-        });
-
         // Event listener for Toggle Sound button
         toggleSoundButton.addEventListener('click', () => {
             if (isSoundPlaying) {
@@ -459,3 +324,4 @@
     </script>
 </body>
 </html>
+�
