@@ -23,226 +23,229 @@
         .calc-output {
             font-weight: 600;
         }
+        /* Styles for the tooltip */
+        .tooltip-container .tooltip-text {
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .tooltip-container:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+        /* Styles for the disabled fieldset */
+        #calculator-fieldset:disabled {
+            opacity: 0.4;
+            pointer-events: none; /* Prevents interaction */
+        }
+        /* Custom styled dropdown */
+        .custom-select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
+        }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
+<body class="bg-gray-100 text-gray-800">
 
     <div class="container mx-auto p-4 sm:p-6 lg:p-8">
         <h1 class="text-3xl font-bold mb-8 text-center text-gray-900">Interactive Structured Data Scanning Time Calculator</h1>
 
-        <!-- First Configuration Table -->
-        <div class="bg-white rounded-xl shadow-md overflow-hidden mb-12">
+        <div class="bg-white rounded-xl shadow-md overflow-hidden max-w-4xl mx-auto">
             <div class="p-6">
-                <h2 class="text-xl font-semibold mb-4 text-gray-700">Configuration 1: 16 vCPU / 64GB RAM</h2>
-                <div class="overflow-x-auto">
-                    <table class="min-w-full text-sm">
-                        <thead class="bg-gray-100">
-                            <tr>
-                                <th class="p-4 font-semibold text-left tracking-wider">Description</th>
-                                <th class="p-4 font-semibold text-left tracking-wider">Value</th>
-                                <th class="p-4 font-semibold text-left tracking-wider">Comment</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-200">
-                            <tr>
-                                <td class="p-4 whitespace-nowrap">Number of nodes in cluster</td>
-                                <td class="p-4 text-gray-600">
-                                    <input type="number" id="nodes1" min="1" max="20" value="2" class="w-24 p-1 border rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500">
-                                </td>
-                                <td class="p-4 text-gray-600">Assumes 16 vCPU/64G RAM</td>
-                            </tr>
-                             <tr class="bg-gray-50">
-                                <td class="p-4 whitespace-nowrap">Download workers in cluster</td>
-                                <td class="p-4 text-gray-600"><span id="workers1" class="calc-output"></span></td>
-                                <td class="p-4 text-gray-600">-</td>
-                            </tr>
-                            <tr>
-                                <td class="p-4 whitespace-nowrap">Low download worker rate (TB/day)</td>
-                                <td class="p-4 text-gray-600">0.02</td>
-                                <td class="p-4 text-gray-600">20 GB/day</td>
-                            </tr>
-                            <tr class="bg-gray-50">
-                                <td class="p-4 whitespace-nowrap">High download worker rate (TB/day)</td>
-                                <td class="p-4 text-gray-600">0.06</td>
-                                <td class="p-4 text-gray-600">60 GB/day</td>
-                            </tr>
-                            <tr>
-                                <td class="p-4 whitespace-nowrap">Low scan rate/day (TB/day)</td>
-                                <td class="p-4 text-gray-600"><span id="lo_scan_rate1" class="calc-output"></span></td>
-                                <td class="p-4 text-gray-600">-</td>
-                            </tr>
-                             <tr class="bg-gray-50">
-                                <td class="p-4 whitespace-nowrap">High scan rate/day (TB/day)</td>
-                                <td class="p-4 text-gray-600"><span id="hi_scan_rate1" class="calc-output"></span></td>
-                                <td class="p-4 text-gray-600">-</td>
-                            </tr>
-                            <tr>
-                                <td class="p-4 whitespace-nowrap">Dataset size (TB)</td>
-                                <td class="p-4 text-gray-600">
-                                    <input type="number" id="dataset_size1" value="1" min="0" step="0.1" class="w-24 p-1 border rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500">
-                                </td>
-                                <td class="p-4 text-gray-600">-</td>
-                            </tr>
-                            <tr class="bg-gray-50">
-                                <td class="p-4 whitespace-nowrap font-medium text-blue-600">Max scan time (days)</td>
-                                <td class="p-4 text-gray-600"><span id="max_scan_time1" class="calc-output"></span></td>
-                                <td class="p-4 text-gray-600">-</td>
-                            </tr>
-                            <tr>
-                                <td class="p-4 whitespace-nowrap font-medium text-green-600">Min scan time (days)</td>
-                                <td class="p-4 text-gray-600"><span id="min_scan_time1" class="calc-output"></span></td>
-                                <td class="p-4 text-gray-600">TODO: Estimate cost for dup detection & other options</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <!-- Box 1: Configuration Selector -->
+                <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                        <div class="flex items-center gap-2 tooltip-container relative">
+                            <label for="configSelection" class="text-lg font-semibold text-gray-800">1. Select Hardware Configuration</label>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle text-gray-500 cursor-help" viewBox="0 0 16 16">
+                               <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                               <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
+                           </svg>
+                           <div class="tooltip-text absolute left-0 top-full mt-2 w-64 p-3 bg-gray-800 text-white text-sm rounded-lg shadow-lg z-10">
+                              Choose a hardware profile to calculate scan time estimates. The calculator will be enabled after selection.
+                           </div>
+                        </div>
+                        <div class="relative w-full sm:w-80">
+                           <select id="configSelection" class="custom-select w-full p-2.5 border border-gray-300 rounded-md bg-white font-medium text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                               <option value="" disabled selected>-- Choose a profile --</option>
+                               <option value="1">Configuration 1: 16 vCPU / 64GB RAM</option>
+                               <option value="2">Configuration 2: 32 vCPU / 128GB RAM</option>
+                           </select>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
 
-        <!-- Second Configuration Table -->
-        <div class="bg-white rounded-xl shadow-md overflow-hidden">
-            <div class="p-6">
-                <h2 class="text-xl font-semibold mb-4 text-gray-700">Configuration 2: 32 vCPU / 128GB RAM</h2>
-                <div class="overflow-x-auto">
-                     <table class="min-w-full text-sm">
-                        <thead class="bg-gray-100">
-                            <tr>
-                                <th class="p-4 font-semibold text-left tracking-wider">Description</th>
-                                <th class="p-4 font-semibold text-left tracking-wider">Value</th>
-                                <th class="p-4 font-semibold text-left tracking-wider">Comment</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-200">
-                            <tr>
-                                <td class="p-4 whitespace-nowrap">Number of nodes in cluster</td>
-                                <td class="p-4 text-gray-600">
-                                    <input type="number" id="nodes2" min="1" max="20" value="2" class="w-24 p-1 border rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500">
-                                </td>
-                                <td class="p-4 text-gray-600">Assumes 32 vCPU/128G RAM (max 3)</td>
-                            </tr>
-                             <tr class="bg-gray-50">
-                                <td class="p-4 whitespace-nowrap">Download workers in cluster</td>
-                                <td class="p-4 text-gray-600"><span id="workers2" class="calc-output"></span></td>
-                                <td class="p-4 text-gray-600">-</td>
-                            </tr>
-                            <tr>
-                                <td class="p-4 whitespace-nowrap">Low download worker rate (TB/day)</td>
-                                <td class="p-4 text-gray-600">0.02</td>
-                                <td class="p-4 text-gray-600">20 GB/day/thread</td>
-                            </tr>
-                            <tr class="bg-gray-50">
-                                <td class="p-4 whitespace-nowrap">High download worker rate (TB/day)</td>
-                                <td class="p-4 text-gray-600">0.06</td>
-                                <td class="p-4 text-gray-600">60 GB/day/thread best case, Sharepoint</td>
-                            </tr>
-                            <tr>
-                                <td class="p-4 whitespace-nowrap">Low scan rate/day (TB/day)</td>
-                                <td class="p-4 text-gray-600"><span id="lo_scan_rate2" class="calc-output"></span></td>
-                                <td class="p-4 text-gray-600">-</td>
-                            </tr>
-                             <tr class="bg-gray-50">
-                                <td class="p-4 whitespace-nowrap">High scan rate/day (TB/day)</td>
-                                <td class="p-4 text-gray-600"><span id="hi_scan_rate2" class="calc-output"></span></td>
-                                <td class="p-4 text-gray-600">-</td>
-                            </tr>
-                            <tr>
-                                <td class="p-4 whitespace-nowrap">Dataset size (TB)</td>
-                                <td class="p-4 text-gray-600">
-                                    <input type="number" id="dataset_size2" value="1" min="0" step="0.1" class="w-24 p-1 border rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500">
-                                </td>
-                                <td class="p-4 text-gray-600">-</td>
-                            </tr>
-                            <tr class="bg-gray-50">
-                                <td class="p-4 whitespace-nowrap font-medium text-blue-600">Max scan time (days)</td>
-                                <td class="p-4 text-gray-600"><span id="max_scan_time2" class="calc-output"></span></td>
-                                <td class="p-4 text-gray-600">-</td>
-                            </tr>
-                            <tr>
-                                <td class="p-4 whitespace-nowrap font-medium text-green-600">Min scan time (days)</td>
-                                <td class="p-4 text-gray-600"><span id="min_scan_time2" class="calc-output"></span></td>
-                                <td class="p-4 text-gray-600">-</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <!-- Box 2: Calculator Fields -->
+                <fieldset id="calculator-fieldset" class="mt-6">
+                     <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                        <h2 class="text-lg font-semibold text-gray-800 mb-4">2. Enter Scan Details & View Results</h2>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full text-sm">
+                                <thead class="bg-gray-100">
+                                    <tr>
+                                        <th class="p-4 font-semibold text-left tracking-wider">Description</th>
+                                        <th class="p-4 font-semibold text-left tracking-wider">Value</th>
+                                        <th class="p-4 font-semibold text-left tracking-wider">Comment</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-200">
+                                    <tr>
+                                        <td class="p-4 whitespace-nowrap">Number of nodes in cluster</td>
+                                        <td class="p-4 text-gray-600">
+                                            <input type="number" id="nodes" min="1" max="20" value="2" class="w-24 p-1 border rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500">
+                                        </td>
+                                        <td class="p-4 text-gray-600"><span id="configComment"></span></td>
+                                    </tr>
+                                     <tr class="bg-gray-50">
+                                        <td class="p-4 whitespace-nowrap">Download workers in cluster</td>
+                                        <td class="p-4 text-gray-600"><span id="workers" class="calc-output"></span></td>
+                                        <td class="p-4 text-gray-600">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-4 whitespace-nowrap">Low download worker rate (TB/day)</td>
+                                        <td class="p-4 text-gray-600">0.02</td>
+                                        <td class="p-4 text-gray-600"><span id="lo_download_comment"></span></td>
+                                    </tr>
+                                    <tr class="bg-gray-50">
+                                        <td class="p-4 whitespace-nowrap">High download worker rate (TB/day)</td>
+                                        <td class="p-4 text-gray-600">0.06</td>
+                                        <td class="p-4 text-gray-600"><span id="hi_download_comment"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-4 whitespace-nowrap">Low scan rate/day (TB/day)</td>
+                                        <td class="p-4 text-gray-600"><span id="lo_scan_rate" class="calc-output"></span></td>
+                                        <td class="p-4 text-gray-600">-</td>
+                                    </tr>
+                                     <tr class="bg-gray-50">
+                                        <td class="p-4 whitespace-nowrap">High scan rate/day (TB/day)</td>
+                                        <td class="p-4 text-gray-600"><span id="hi_scan_rate" class="calc-output"></span></td>
+                                        <td class="p-4 text-gray-600">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-4 whitespace-nowrap">Dataset size (TB)</td>
+                                        <td class="p-4 text-gray-600">
+                                            <input type="number" id="dataset_size" value="1" min="0" step="0.1" class="w-24 p-1 border rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500">
+                                        </td>
+                                        <td class="p-4 text-gray-600">-</td>
+                                    </tr>
+                                    <tr class="bg-gray-50">
+                                        <td class="p-4 whitespace-nowrap font-medium text-blue-600">Max scan time (days)</td>
+                                        <td class="p-4 text-gray-600"><span id="max_scan_time" class="calc-output"></span></td>
+                                        <td class="p-4 text-gray-600">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-4 whitespace-nowrap font-medium text-green-600">Min scan time (days)</td>
+                                        <td class="p-4 text-gray-600"><span id="min_scan_time" class="calc-output"></span></td>
+                                        <td class="p-4 text-gray-600"><span id="min_scan_comment"></span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </fieldset>
             </div>
         </div>
     </div>
 
     <script>
-        // --- CALCULATION LOGIC ---
+        // --- DOM Elements ---
+        const configSelection = document.getElementById('configSelection');
+        const calculatorFieldset = document.getElementById('calculator-fieldset');
+        const nodesInput = document.getElementById('nodes');
+        const datasetSizeInput = document.getElementById('dataset_size');
 
-        // Helper function to format numbers
+        // --- Helper function to format numbers ---
         function formatNumber(num) {
             if (num === Infinity || isNaN(num) || num < 0) {
                 return 'N/A';
             }
-            // Use toFixed for decimal places and parseFloat to remove trailing zeros
             return parseFloat(num.toFixed(3));
         }
-        
-        // --- CONFIGURATION 1 ---
-        function calculateConfig1() {
-            // Get input values
-            const nodes = parseFloat(document.getElementById('nodes1').value) || 0;
-            const datasetSize = parseFloat(document.getElementById('dataset_size1').value) || 0;
-            
-            // Fixed values from table
-            const loDownloadRate = 0.02;
-            const hiDownloadRate = 0.06;
 
-            // Perform calculations based on formulas
-            const workers = nodes * 3 - 2;
-            const loScanRate = loDownloadRate * workers;
-            const hiScanRate = hiDownloadRate * workers;
-            const maxScanTime = loScanRate > 0 ? datasetSize / loScanRate : Infinity;
-            const minScanTime = hiScanRate > 0 ? datasetSize / hiScanRate : Infinity;
-            
-            // Update the UI with calculated values
-            document.getElementById('workers1').textContent = formatNumber(workers);
-            document.getElementById('lo_scan_rate1').textContent = formatNumber(loScanRate);
-            document.getElementById('hi_scan_rate1').textContent = formatNumber(hiScanRate);
-            document.getElementById('max_scan_time1').textContent = formatNumber(maxScanTime);
-            document.getElementById('min_scan_time1').textContent = formatNumber(minScanTime);
+        // --- Resets the calculator fields to a blank state ---
+        function resetCalculator() {
+            document.getElementById('configComment').textContent = '';
+            document.getElementById('workers').textContent = '';
+            document.getElementById('lo_download_comment').textContent = '';
+            document.getElementById('hi_download_comment').textContent = '';
+            document.getElementById('lo_scan_rate').textContent = '';
+            document.getElementById('hi_scan_rate').textContent = '';
+            document.getElementById('max_scan_time').textContent = '';
+            document.getElementById('min_scan_time').textContent = '';
+            document.getElementById('min_scan_comment').textContent = '';
         }
         
-        // --- CONFIGURATION 2 ---
-        function calculateConfig2() {
-            // Get input values
-            const nodes = parseFloat(document.getElementById('nodes2').value) || 0;
-            const datasetSize = parseFloat(document.getElementById('dataset_size2').value) || 0;
-
-            // Fixed values from table
+        // --- Main calculation logic ---
+        function calculate() {
+            const config = configSelection.value;
+            if (!config) return; 
+            
+            const nodes = parseFloat(nodesInput.value) || 0;
+            const datasetSize = parseFloat(datasetSizeInput.value) || 0;
+            
             const loDownloadRate = 0.02;
             const hiDownloadRate = 0.06;
 
-            // Perform calculations based on formulas
-            const workers = nodes * 5 - 2;
+            let workers, configCommentText, loDownloadCommentText, hiDownloadCommentText, minScanCommentText;
+
+            if (config === '1') {
+                workers = nodes * 3 - 2;
+                configCommentText = "Assumes 16 vCPU/64G RAM";
+                loDownloadCommentText = "20 GB/day";
+                hiDownloadCommentText = "60 GB/day";
+                minScanCommentText = "TODO: Estimate cost for dup detection & other options";
+            } else { // config === '2'
+                workers = nodes * 5 - 2;
+                configCommentText = "Assumes 32 vCPU/128G RAM (max 3)";
+                loDownloadCommentText = "20 GB/day/thread";
+                hiDownloadCommentText = "60 GB/day/thread best case, Sharepoint";
+                minScanCommentText = "-";
+            }
+
             const loScanRate = loDownloadRate * workers;
             const hiScanRate = hiDownloadRate * workers;
             const maxScanTime = loScanRate > 0 ? datasetSize / loScanRate : Infinity;
             const minScanTime = hiScanRate > 0 ? datasetSize / hiScanRate : Infinity;
+            
+            // Update the UI
+            document.getElementById('configComment').textContent = configCommentText;
+            document.getElementById('lo_download_comment').textContent = loDownloadCommentText;
+            document.getElementById('hi_download_comment').textContent = hiDownloadCommentText;
+            document.getElementById('min_scan_comment').textContent = minScanCommentText;
+            document.getElementById('workers').textContent = formatNumber(workers);
+            document.getElementById('lo_scan_rate').textContent = formatNumber(loScanRate);
+            document.getElementById('hi_scan_rate').textContent = formatNumber(hiScanRate);
+            document.getElementById('max_scan_time').textContent = formatNumber(maxScanTime);
+            document.getElementById('min_scan_time').textContent = formatNumber(minScanTime);
+        }
 
-            // Update the UI with calculated values
-            document.getElementById('workers2').textContent = formatNumber(workers);
-            document.getElementById('lo_scan_rate2').textContent = formatNumber(loScanRate);
-            document.getElementById('hi_scan_rate2').textContent = formatNumber(hiScanRate);
-            document.getElementById('max_scan_time2').textContent = formatNumber(maxScanTime);
-            document.getElementById('min_scan_time2').textContent = formatNumber(minScanTime);
+        // --- Event handler for config selection ---
+        function handleConfigChange() {
+             if (configSelection.value) {
+                calculatorFieldset.disabled = false;
+                calculate();
+            } else {
+                calculatorFieldset.disabled = true;
+                resetCalculator();
+            }
         }
 
         // --- EVENT LISTENERS ---
         document.addEventListener('DOMContentLoaded', () => {
-            // Set up event listeners for all input fields
-            document.getElementById('nodes1').addEventListener('input', calculateConfig1);
-            document.getElementById('dataset_size1').addEventListener('input', calculateConfig1);
+            // Set initial state
+            calculatorFieldset.disabled = true;
+            resetCalculator();
             
-            document.getElementById('nodes2').addEventListener('input', calculateConfig2);
-            document.getElementById('dataset_size2').addEventListener('input', calculateConfig2);
-            
-            // Perform initial calculation on page load
-            calculateConfig1();
-            calculateConfig2();
+            // Set up event listeners
+            configSelection.addEventListener('change', handleConfigChange);
+            nodesInput.addEventListener('input', calculate);
+            datasetSizeInput.addEventListener('input', calculate);
         });
     </script>
 </body>
