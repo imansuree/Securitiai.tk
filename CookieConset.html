@@ -1,11 +1,40 @@
- <!DOCTYPE html>
- <html lang="en">
- <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Securiti - Cookie Consent Demo</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookie Consent Example</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom font */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 flex flex-col min-h-screen">
 
-    <!-- Securiti.ai Cookie Consent Script (unchanged) -->
+    <!-- Main content -->
+    <main class="flex-grow p-8 flex items-center justify-center text-center">
+        <div>
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">My Test Page</h1>
+            <p class="text-lg text-gray-600">This is a demo page to test the cookie consent banner and a custom footer link.</p>
+        </div>
+    </main>
+
+    <!-- Footer with proper link -->
+    <footer class="bg-gray-900 text-white py-8 px-4 text-center mt-auto">
+        <div class="container mx-auto">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                
+                <!-- Using the original class as well for compatibility -->
+                <a href="#" id="manage-consent-link" class="cmp-revoke-consent text-sm text-gray-400 hover:text-white hover:underline transition-colors duration-200">Manage Cookie Preferences</a>
+            </div>
+        </div>
+    </footer>
+
     <script>
       (function () {
         var s = document.createElement("script");
@@ -31,138 +60,5 @@
       src="https://cdn-prod.securiti.ai/consent/auto_blocking/f84be4f0-e65e-40d3-af64-f6f4ae7b602f/007d8ed5-ff5d-450a-acd7-e23ae3b9d20a.js"
     ></script>
 
-    <!-- Tailwind CSS for modern styling -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Fonts for Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <style>
-      /* Custom styles to match Securiti's branding */
-      body {
-        font-family: 'Inter', sans-serif;
-        background-color: #F9FAFB;
-        color: #111827;
-      }
-      .hero-gradient {
-        background: linear-gradient(135deg, #004aad, #0b1726);
-      }
-      /* ✅ Force the "Manage Cookie Preferences" link to always be visible */
-      .cmp-revoke-consent {
-        display: inline !important;
-      }
-      /* Style for the new list item to ensure it behaves correctly */
-      .f-cookie-pref-trigger a {
-        cursor: pointer;
-      }
-    </style>
- </head>
- <body class="bg-gray-50">
-
-    <!-- Header Section -->
-    <header class="bg-white shadow-sm sticky top-0 z-50">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <!-- Logo -->
-            <div class="flex items-center">
-                <svg width="120" height="28" viewBox="0 0 142 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M22.9361 0.480011H9.01614V31.5H22.9361C30.0161 31.5 35.7761 25.98 35.7761 16C35.7761 6.02001 30.0161 0.480011 22.9361 0.480011ZM25.5761 23.52C24.4961 24.6 23.0561 25.2 21.4961 25.2H16.2161V7.08001H21.4961C23.0561 7.08001 24.4961 7.68001 25.5761 8.76001C26.6561 9.84001 27.2561 11.28 27.2561 12.84V19.44C27.2561 20.82 26.7161 22.38 25.5761 23.52Z" fill="#004AAD"/>
-                    <path d="M40.3385 0.480011H57.4985V7.08001H47.5385V12.84H56.5385V19.44H47.5385V24.9H57.8585V31.5H40.3385V0.480011Z" fill="#004AAD"/>
-                    <path d="M78.6805 19.8L81.8005 31.5H89.4805L79.4005 0.480011H70.8805L60.8005 31.5H68.4805L71.6005 19.8H78.6805ZM77.0005 13.56L75.1405 6.84001L73.2805 13.56H77.0005Z" fill="#004AAD"/>
-                    <path d="M93.6219 0.480011H100.822V31.5H93.6219V0.480011Z" fill="#004AAD"/>
-                    <path d="M105.023 0.480011H112.223V24.9H122.183V31.5H105.023V0.480011Z" fill="#004AAD"/>
-                    <path d="M141.562 16.32L135.802 0.480011H127.882L133.822 15.72L127.702 31.5H135.622L141.562 16.32Z" fill="#004AAD"/>
-                </svg>
-            </div>
-            <!-- Desktop Navigation -->
-            <div class="hidden md:flex items-center space-x-8">
-                <a href="#" class="text-gray-700 hover:text-blue-600 font-medium">Solutions</a>
-                <a href="#" class="text-gray-700 hover:text-blue-600 font-medium">Platform</a>
-                <a href="#" class="text-gray-700 hover:text-blue-600 font-medium">Resources</a>
-                <a href="#" class="text-gray-700 hover:text-blue-600 font-medium">Company</a>
-            </div>
-            <!-- CTA Button -->
-            <div class="hidden md:block">
-                <a href="#" class="bg-blue-600 text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-blue-700 transition duration-300">Request a Demo</a>
-            </div>
-            <!-- Mobile Menu Button -->
-            <div class="md:hidden">
-                <button class="text-gray-600 hover:text-gray-800 focus:outline-none">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-                </button>
-            </div>
-        </nav>
-    </header>
-
-    <!-- Hero Section -->
-    <section class="hero-gradient text-white">
-        <div class="container mx-auto px-6 py-24 text-center">
-            <h1 class="text-4xl md:text-5xl font-bold leading-tight mb-4">Cookie Consent Management Made Easy</h1>
-            <p class="text-lg md:text-xl max-w-3xl mx-auto text-blue-100">
-                This demo website shows how Securiti.ai’s cookie consent solution works
-                seamlessly to help businesses comply with global privacy laws while
-                providing transparency to users.
-            </p>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class="py-20">
-        <div class="container mx-auto px-6">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
-                <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300">
-                    <div class="flex items-center justify-center h-16 w-16 rounded-full bg-blue-100 mx-auto mb-6">
-                        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">Seamless Integration</h3>
-                    <p class="text-gray-600">Deploy our consent banner with a single script.</p>
-                </div>
-                <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300">
-                    <div class="flex items-center justify-center h-16 w-16 rounded-full bg-blue-100 mx-auto mb-6">
-                        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">User Transparency</h3>
-                    <p class="text-gray-600">Allow users to easily manage and update their cookie preferences.</p>
-                </div>
-                <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300">
-                    <div class="flex items-center justify-center h-16 w-16 rounded-full bg-blue-100 mx-auto mb-6">
-                        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path></svg>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">Global Compliance</h3>
-                    <p class="text-gray-600">Stay compliant with GDPR, CCPA, and other regulations worldwide.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Video Section -->
-    <section class="bg-white py-20">
-        <div class="container mx-auto px-6 text-center">
-            <h2 class="text-3xl font-bold mb-8">Watch the Demo in Action</h2>
-            <div class="aspect-w-16 aspect-h-9 max-w-4xl mx-auto rounded-lg overflow-hidden shadow-2xl">
-                <iframe
-                    src="https://www.youtube.com/embed/OiJlvfj_ThE?autoplay=1&mute=1&si=n-SFLC5siHfxg2Nx"
-                    title="Securiti Demo Video"
-                    frameborder="0"
-                    allow="autoplay; accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen
-                    class="w-full h-full"
-                ></iframe>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer with proper link -->
-    <footer class="bg-gray-900 text-white py-8 px-4 text-center mt-auto">
-        <div class="container mx-auto">
-            <div class="flex flex-col md:flex-row items-center justify-between">
-                
-                <!-- Using the original class as well for compatibility -->
-                <a href="#" id="manage-consent-link" class="cmp-revoke-consent text-sm text-gray-400 hover:text-white hover:underline transition-colors duration-200">Manage Cookie Preferences</a>
-            </div>
-        </div>
-    </footer>
-
- </body>
- </html>
+</body>
+</html>
