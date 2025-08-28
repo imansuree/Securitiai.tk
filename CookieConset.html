@@ -53,6 +53,10 @@
       .cmp-revoke-consent {
         display: inline !important;
       }
+      /* Style for the new list item to ensure it behaves correctly */
+      .f-cookie-pref-trigger a {
+        cursor: pointer;
+      }
     </style>
  </head>
  <body class="bg-gray-50">
@@ -167,25 +171,15 @@
                 </div>
                 <!-- Column 2 -->
                 <div>
-                    <h4 class="font-semibold text-white tracking-wider mb-4">Platform</h4>
+                    <h4 class="font-semibold text-white tracking-wider mb-4">Company</h4>
                     <ul class="space-y-3">
-                        <li><a href="#" class="text-gray-400 hover:text-white">PrivacyOps</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">DataOps</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">CloudOps</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">RevOps</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">About Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Careers</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Contact Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Partners</a></li>
                     </ul>
                 </div>
                 <!-- Column 3 -->
-                <div>
-                    <h4 class="font-semibold text-white tracking-wider mb-4">Solutions</h4>
-                    <ul class="space-y-3">
-                        <li><a href="#" class="text-gray-400 hover:text-white">Data Privacy</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Data Governance</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Data Security</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Cloud Security</a></li>
-                    </ul>
-                </div>
-                <!-- Column 4 -->
                 <div>
                     <h4 class="font-semibold text-white tracking-wider mb-4">Resources</h4>
                     <ul class="space-y-3">
@@ -195,14 +189,26 @@
                         <li><a href="#" class="text-gray-400 hover:text-white">Datasheets</a></li>
                     </ul>
                 </div>
-                <!-- Column 5 -->
+                <!-- Column 4: Terms -->
                 <div>
-                    <h4 class="font-semibold text-white tracking-wider mb-4">Company</h4>
+                    <h4 class="font-semibold text-white tracking-wider mb-4">Terms</h4>
                     <ul class="space-y-3">
-                        <li><a href="#" class="text-gray-400 hover:text-white">About Us</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Careers</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Contact Us</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Partners</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Terms & Policies</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Security & Compliance</a></li>
+                        <!-- ✅ This is the new list item for managing cookie preferences -->
+                        <li class="f-cookie-pref-trigger"><a href="javascript:void(0);" class="cmp-revoke-consent text-gray-400 hover:text-white">Manage cookie preferences</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">My Privacy Center</a></li>
+                    </ul>
+                </div>
+                <!-- Column 5: Get in Touch -->
+                <div>
+                    <h4 class="font-semibold text-white tracking-wider mb-4">Get in Touch</h4>
+                    <ul class="space-y-3 text-gray-400">
+                        <li>info@securiti.ai</li>
+                        <li>Securiti, Inc.</li>
+                        <li>3150 Olsen Drive</li>
+                        <li>Suite 350</li>
+                        <li>San Jose, CA 95117</li>
                     </ul>
                 </div>
             </div>
@@ -211,9 +217,8 @@
             <div class="mt-16 pt-8 border-t border-gray-700 flex flex-col md:flex-row justify-between items-center">
                 <div class="text-gray-400 text-sm text-center md:text-left">
                     <span>© 2025 Securiti.ai | All rights reserved.</span>
-                    <a href="#" class="ml-4 hover:text-white">Privacy Policy</a>
-                    <!-- This is the link to revoke cookie consent -->
-                    <a href="javascript:void(0);" class="cmp-revoke-consent ml-4 hover:text-white">Manage Cookie Preferences</a>
+                    <a href="#" class="ml-4 hover:text-white">Sitemap</a>
+                    <a href="#" class="ml-4 hover:text-white">XML Sitemap</a>
                 </div>
                 <div class="flex space-x-4 mt-6 md:mt-0">
                     <!-- Social Icons -->
