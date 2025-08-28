@@ -1,50 +1,329 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-	  
-<!-- After adding this script, call setConsentBannerParams({uuid: <unique id> }) to set unique ID for a customer.  -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Securiti - Cookie Consent Demo</title>
 
-<!-- After adding this script, call setConsentBannerParams({uuid: <unique id> }) to set unique ID for a customer.  -->
-<script>
-(function () {
-	var s = document.createElement('script');
-	s.src = 'https://cdn-prod.securiti.ai/consent/cookie-consent-sdk-loader.js';
-	s.setAttribute('data-tenant-uuid', 'f84be4f0-e65e-40d3-af64-f6f4ae7b602f');
-	s.setAttribute('data-domain-uuid', '007d8ed5-ff5d-450a-acd7-e23ae3b9d20a');
-	s.setAttribute('data-backend-url', 'https://app.securiti.ai');
-	s.setAttribute('data-skip-css', 'false');
-	s.defer = true;
-	var parent_node = document.head || document.body;
-	parent_node.appendChild(s);
-})()
-</script>
-	  <script type="text/javascript" src="https://cdn-prod.securiti.ai/consent/auto_blocking/f84be4f0-e65e-40d3-af64-f6f4ae7b602f/007d8ed5-ff5d-450a-acd7-e23ae3b9d20a.js"></script>
-	  
-	  <title>Securiti - Cookie Consent Demo</title>
+    <!-- ✅ Securiti Cookie Consent Script (unchanged) -->
+    <script>
+      (function () {
+        var s = document.createElement("script");
+        s.src =
+          "https://cdn-prod.securiti.ai/consent/cookie-consent-sdk-loader.js";
+        s.setAttribute(
+          "data-tenant-uuid",
+          "f84be4f0-e65e-40d3-af64-f6f4ae7b602f"
+        );
+        s.setAttribute(
+          "data-domain-uuid",
+          "007d8ed5-ff5d-450a-acd7-e23ae3b9d20a"
+        );
+        s.setAttribute("data-backend-url", "https://app.securiti.ai");
+        s.setAttribute("data-skip-css", "false");
+        s.defer = true;
+        var parent_node = document.head || document.body;
+        parent_node.appendChild(s);
+      })();
+    </script>
+    <script
+      type="text/javascript"
+      src="https://cdn-prod.securiti.ai/consent/auto_blocking/f84be4f0-e65e-40d3-af64-f6f4ae7b602f/007d8ed5-ff5d-450a-acd7-e23ae3b9d20a.js"
+    ></script>
+
+    <!-- ✅ Styles -->
     <style>
-      p {
-        font-size: 16pt;
+      body {
+        margin: 0;
+        font-family: "Inter", "Segoe UI", Arial, sans-serif;
+        background-color: #fff;
+        color: #222;
+        line-height: 1.6;
       }
 
-      .myClass {
-        color: red;	
+      /* Header */
+      header {
+        background: #0a1f44;
+        color: #fff;
+        padding: 15px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
       }
 
-      #myId {
-        background-color: black;
+      header h1 {
+        margin: 0;
+        font-size: 20px;
+        letter-spacing: 0.5px;
+      }
+
+      nav a {
+        color: #fff;
+        text-decoration: none;
+        margin: 0 15px;
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      nav a:hover {
+        color: #66b3ff;
+      }
+
+      /* Hero */
+      .hero {
+        background: linear-gradient(135deg, #003366 0%, #0066cc 100%);
+        color: white;
+        text-align: center;
+        padding: 100px 20px;
+      }
+
+      .hero h2 {
+        font-size: 40px;
+        margin-bottom: 15px;
+        font-weight: 600;
+      }
+
+      .hero p {
+        font-size: 18px;
+        max-width: 700px;
+        margin: 0 auto 30px;
+      }
+
+      .hero button {
+        background-color: #ff6b35;
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        font-size: 16px;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+
+      .hero button:hover {
+        background-color: #e65a26;
+      }
+
+      /* Features / Products */
+      .section-title {
+        text-align: center;
+        margin: 60px 20px 30px;
+        font-size: 28px;
+        font-weight: 600;
+        color: #0a1f44;
+      }
+
+      .products {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 25px;
+        padding: 0 40px 60px;
+        max-width: 1200px;
+        margin: auto;
+      }
+
+      .product {
+        background: #fff;
+        border-radius: 12px;
+        border: 1px solid #eee;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+        padding: 20px;
+        text-align: center;
+        transition: transform 0.2s;
+      }
+
+      .product:hover {
+        transform: translateY(-4px);
+      }
+
+      .product img {
+        max-width: 100%;
+        border-radius: 10px;
+      }
+
+      .product h3 {
+        margin: 15px 0 10px;
+        color: #003366;
+      }
+
+      .product p {
+        color: #555;
+        font-size: 14px;
+        margin-bottom: 10px;
+      }
+
+      .product button {
+        background: #003366;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      .product button:hover {
+        background: #0055aa;
+      }
+
+      /* Video */
+      .video-section {
+        text-align: center;
+        margin: 60px 20px;
+      }
+
+      .video-section h2 {
+        margin-bottom: 20px;
+        color: #0a1f44;
+      }
+
+      /* Footer */
+      footer {
+        background: #0a1f44;
+        color: #ccc;
+        padding: 40px 20px;
+        font-size: 14px;
+      }
+
+      footer .footer-top {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 20px;
+        max-width: 1200px;
+        margin: auto auto 30px;
+      }
+
+      footer h4 {
+        color: #fff;
+        margin-bottom: 10px;
+        font-size: 16px;
+      }
+
+      footer a {
+        color: #ccc;
+        text-decoration: none;
+        display: block;
+        margin-bottom: 8px;
+      }
+
+      footer a:hover {
+        color: #fff;
+      }
+
+      footer .bottom {
+        text-align: center;
+        border-top: 1px solid #333;
+        padding-top: 15px;
+        font-size: 13px;
+      }
+
+      /* ✅ Revoke Consent Link */
+      .cmp-revoke-consent {
+        display: inline-block;
+        margin-top: 10px;
+        font-size: 14px;
+        color: #66b3ff;
+        text-decoration: underline;
+        cursor: pointer;
       }
     </style>
   </head>
-  <body>
-    <p>This is the first paragraph</p>
-    <p class="myClass">This is a simple website to test the cookie consent functionality</p>
-    <p class="myClass" id="myId">The site doesnt have any sort of CSS or Javascript</p>
-   <center> <iframe width="560" height="315" src="https://www.youtube.com/embed/X-tI7I6ii-U" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-     <br />
-<!-- You may style the link by overriding class "cmp-revoke-consent" -->
-<a href="javascript:void(0);" class="cmp-revoke-consent">Manage Cookie Preferences</a>
 
-    </center>
-	  <li id="menu-item-13288" class="f-cookie-pref-trigger menu-item menu-item-type-custom menu-item-object-custom menu-item-13288 menu-item-manage-cookie-preferences menu-item-manage-cookie-preferences menu-item-manage-cookie-preferences"><a href="#">Manage cookie preferences</a></li>
+  <body>
+    <!-- ✅ Header -->
+    <header>
+      <h1>Securiti Demo</h1>
+      <nav>
+        <a href="#">Home</a>
+        <a href="#">Solutions</a>
+        <a href="#">Resources</a>
+        <a href="#">Contact</a>
+      </nav>
+    </header>
+
+    <!-- ✅ Hero Section -->
+    <section class="hero">
+      <h2>Cookie Consent Demo</h2>
+      <p>
+        This demo site showcases Securiti’s cookie consent management
+        functionality. See how consent banners, preferences, and revocation work
+        seamlessly.
+      </p>
+      <button>Explore Demo</button>
+    </section>
+
+    <!-- ✅ Features Section -->
+    <h2 class="section-title">Demo Product Features</h2>
+    <section class="products">
+      <div class="product">
+        <img src="https://picsum.photos/400/250?random=11" alt="Consent UI" />
+        <h3>Consent Banner</h3>
+        <p>Customizable banners aligned with your brand.</p>
+        <button>Learn More</button>
+      </div>
+
+      <div class="product">
+        <img src="https://picsum.photos/400/250?random=12" alt="Preferences" />
+        <h3>Preferences Center</h3>
+        <p>Users can easily manage and update preferences.</p>
+        <button>Learn More</button>
+      </div>
+
+      <div class="product">
+        <img src="https://picsum.photos/400/250?random=13" alt="Audit" />
+        <h3>Audit Trails</h3>
+        <p>Maintain compliance with automatic records.</p>
+        <button>Learn More</button>
+      </div>
+    </section>
+
+    <!-- ✅ Video Section -->
+    <section class="video-section">
+      <h2>Watch Demo in Action</h2>
+      <iframe
+        width="560"
+        height="315"
+        src="https://www.youtube.com/embed/X-tI7I6ii-U"
+        title="YouTube demo video"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen
+      ></iframe>
+    </section>
+
+    <!-- ✅ Footer -->
+    <footer>
+      <div class="footer-top">
+        <div>
+          <h4>Solutions</h4>
+          <a href="#">Consent Management</a>
+          <a href="#">PrivacyOps</a>
+          <a href="#">Data Governance</a>
+        </div>
+        <div>
+          <h4>Resources</h4>
+          <a href="#">Documentation</a>
+          <a href="#">Webinars</a>
+          <a href="#">Case Studies</a>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <a href="#">About Us</a>
+          <a href="#">Careers</a>
+          <a href="#">Contact</a>
+        </div>
+        <div>
+          <h4>Legal</h4>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="javascript:void(0);" class="cmp-revoke-consent"
+            >Manage Cookie Preferences</a
+          >
+        </div>
+      </div>
+
+      <div class="bottom">
+        &copy; 2025 Securiti. All rights reserved.
+      </div>
+    </footer>
   </body>
 </html>
