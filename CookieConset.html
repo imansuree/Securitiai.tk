@@ -1,6 +1,22 @@
 <!DOCTYPE html>
 <html>
   <head>
+	  
+<!-- After adding this script, call setConsentBannerParams({uuid: <unique id> }) to set unique ID for a customer.  -->
+<script>
+(function () {
+	var s = document.createElement('script');
+	s.src = 'https://cdn-prod.securiti.ai/consent/cookie-consent-sdk-loader.js';
+	s.setAttribute('data-tenant-uuid', 'f84be4f0-e65e-40d3-af64-f6f4ae7b602f');
+	s.setAttribute('data-domain-uuid', '1782ccc9-b0c5-415e-b7f0-a784656fe6e3');
+	s.setAttribute('data-backend-url', 'https://app.securiti.ai');
+	s.setAttribute('data-skip-css', 'false');
+	s.defer = true;
+	var parent_node = document.head || document.body;
+	parent_node.appendChild(s);
+})()
+</script>
+	  <script type="text/javascript" src="https://cdn-prod.securiti.ai/consent/auto_blocking/f84be4f0-e65e-40d3-af64-f6f4ae7b602f/1782ccc9-b0c5-415e-b7f0-a784656fe6e3.js"></script>
        <title>Securiti - Cookie Consent Demo</title>
     <style>
       p {
@@ -15,23 +31,8 @@
         background-color: black;
       }
     </style>
-    <link rel='stylesheet' type='text/css' href='https://cdn-prod.securiti.ai/consent/cookie-consent.css' />
   </head>
   <body>
-  <!-- After adding this script, call setConsentBannerParams({uuid: <unique id> }) to set unique ID for a customer. -->
-<script>
-(function () {
-	var s = document.createElement('script');
-	s.src = 'https://cdn-prod.securiti.ai/consent/cookie-consent-sdk.js';
-	s.setAttribute('data-tenant-uuid', '2c1324e7-dbd2-4526-9f4c-21a395b28a28');
-	s.setAttribute('data-domain-uuid', '73b7cd87-5c09-44b1-8d57-70a89cc2e0b2');
-	s.setAttribute('data-backend-url', 'https://app.securiti.ai');
-	s.defer = true;
-	var parent_node = document.head || document.body;
-	parent_node.appendChild(s);
-	s.addEventListener('load', function() { window.initCmp(); });
-})()
-</script>
     <p>This is the first paragraph</p>
     <p class="myClass">This is a simple website to test the cookie consent functionality</p>
     <p class="myClass" id="myId">The site doesnt have any sort of CSS or Javascript</p>
