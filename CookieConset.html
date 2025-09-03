@@ -8,9 +8,30 @@
     <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     
     <!-- Securiti SDK Scripts -->
-    <script src="https://cdn-prod.securiti.ai/consent/cookie-consent-sdk.js" data-tenant-id="c1211333-e158-45e6-a705-8ea0b7058a60" data-domain-id="13e31e71-7053-4414-87a3-22b2718e3852" data-backend-url="https://app.securiti.ai"></script>
-    <script type="text/javascript" src="https://cdn-prod.securiti.ai/consent/auto-blocker.js"></script>
-
+  <script>
+      (function () {
+        var s = document.createElement("script");
+        s.src =
+          "https://cdn-prod.securiti.ai/consent/cookie-consent-sdk-loader.js";
+        s.setAttribute(
+          "data-tenant-uuid",
+          "f84be4f0-e65e-40d3-af64-f6f4ae7b602f"
+        );
+        s.setAttribute(
+          "data-domain-uuid",
+          "007d8ed5-ff5d-450a-acd7-e23ae3b9d20a"
+        );
+        s.setAttribute("data-backend-url", "https://app.securiti.ai");
+        s.setAttribute("data-skip-css", "false");
+        s.defer = true;
+        var parent_node = document.head || document.body;
+        parent_node.appendChild(s);
+      })();
+    </script>
+    <script
+      type="text/javascript"
+      src="https://cdn-prod.securiti.ai/consent/auto_blocking/f84be4f0-e65e-40d3-af64-f6f4ae7b602f/007d8ed5-ff5d-450a-acd7-e23ae3b9d20a.js"
+    ></script>
     <style>
         body {
             font-family: 'Montserrat', sans-serif;
