@@ -16,8 +16,6 @@
         }
     </style>
     <script>
-        // --- Event Listeners ---
-        // We wrap the logic in a DOMContentLoaded listener to ensure the HTML elements are available when the script runs from the head.
         document.addEventListener('DOMContentLoaded', () => {
             const localeSelector = document.getElementById('locale-selector');
             const SCRIPT_ID = 'securiti-script';
@@ -26,14 +24,10 @@
              * Cleans up any existing Securiti.ai script and banner elements from the DOM.
              */
             function cleanupPreviousScript() {
-                // Remove the script tag
                 const oldScript = document.getElementById(SCRIPT_ID);
                 if (oldScript) {
                     oldScript.remove();
                 }
-                // Securiti.ai often adds elements with specific IDs or classes.
-                // This is a generic way to find and remove the banner UI.
-                // You might need to inspect the generated banner to find a more specific selector.
                 const banner = document.getElementById('securiti-privacy-banner') || document.querySelector('.securiti-banner-container');
                 if (banner) {
                     banner.remove();
@@ -45,24 +39,16 @@
              * @param {string} localeCode - The language code (e.g., 'en', 'fr').
              */
             function loadSecuritiScript(localeCode) {
-                // 1. Clean up any script that might have been loaded before
                 cleanupPreviousScript();
-
-                // 2. Create the new script element
                 const s = document.createElement('script');
                 s.id = SCRIPT_ID;
                 s.src = 'https://cdn-prod.securiti.ai/consent/cookie-consent-sdk-loader.js';
-
-                // --- IMPORTANT: These are the values you provided ---
                 s.setAttribute('data-tenant-uuid', 'f84be4f0-e65e-40d3-af64-f6f4ae7b602f');
                 s.setAttribute('data-domain-uuid', '007d8ed5-ff5d-450a-acd7-e23ae3b9d20a');
-                // ------------------------------------
-
                 s.setAttribute('data-backend-url', 'https://app.securiti.ai');
                 s.setAttribute('data-skip-css', 'false');
                 s.defer = true;
 
-                // 3. Configure the language before the script loads
                 window.SecuritiDataLayer = window.SecuritiDataLayer || [];
                 SecuritiDataLayer.push([
                     'beforeLoad',
@@ -71,18 +57,41 @@
                         bareSdk.setLanguage(localeCode);
                     }
                 ]);
-
-                // 4. Append the script to the head to start loading
                 document.head.appendChild(s);
             }
 
-            // Load script when the selection changes
+            /**
+             * Updates the URL's query parameter without reloading the page.
+             * @param {string} localeCode - The language code to set in the URL.
+             */
+            function updateUrlForLocale(localeCode) {
+                const newUrl = new URL(window.location);
+                newUrl.searchParams.set('lang', localeCode);
+                // Use replaceState to avoid cluttering browser history on multiple selections.
+                window.history.replaceState({ path: newUrl.href }, '', newUrl.href);
+            }
+
+            // --- Event Listener for Dropdown Change ---
             localeSelector.addEventListener('change', (event) => {
-                loadSecuritiScript(event.target.value);
+                const newLocale = event.target.value;
+                updateUrlForLocale(newLocale);
+                loadSecuritiScript(newLocale);
             });
 
-            // Load the initial script on page load with the default selected value
-            loadSecuritiScript(localeSelector.value);
+            // --- Initial Page Load Logic ---
+            const urlParams = new URLSearchParams(window.location.search);
+            const langFromUrl = urlParams.get('lang');
+            // Default to English if no valid language is found in URL
+            let initialLang = 'en';
+
+            // If a valid language code is in the URL, use it as the initial language
+            if (langFromUrl && Array.from(localeSelector.options).some(opt => opt.value === langFromUrl)) {
+                initialLang = langFromUrl;
+            }
+
+            // Set the dropdown to the correct value and load the script
+            localeSelector.value = initialLang;
+            loadSecuritiScript(initialLang);
         });
     </script>
 </head>
@@ -104,8 +113,8 @@
         <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
             <label for="locale-selector" class="text-lg font-medium">Select a Language:</label>
             <select id="locale-selector" class="block w-full sm:w-auto px-4 py-2 text-base text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                <option value="en">English (en)</option>
-                <option value="fr" selected>French (fr)</option>
+                <option value="en" selected>English (en)</option>
+                <option value="fr">French (fr)</option>
                 <option value="es">Spanish (es)</option>
                 <option value="de">German (de)</option>
                 <option value="it">Italian (it)</option>
