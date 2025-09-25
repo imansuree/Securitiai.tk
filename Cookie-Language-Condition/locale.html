@@ -15,6 +15,76 @@
             transition: opacity 0.3s ease-in-out;
         }
     </style>
+    <script>
+        // --- Event Listeners ---
+        // We wrap the logic in a DOMContentLoaded listener to ensure the HTML elements are available when the script runs from the head.
+        document.addEventListener('DOMContentLoaded', () => {
+            const localeSelector = document.getElementById('locale-selector');
+            const SCRIPT_ID = 'securiti-script';
+
+            /**
+             * Cleans up any existing Securiti.ai script and banner elements from the DOM.
+             */
+            function cleanupPreviousScript() {
+                // Remove the script tag
+                const oldScript = document.getElementById(SCRIPT_ID);
+                if (oldScript) {
+                    oldScript.remove();
+                }
+                // Securiti.ai often adds elements with specific IDs or classes.
+                // This is a generic way to find and remove the banner UI.
+                // You might need to inspect the generated banner to find a more specific selector.
+                const banner = document.getElementById('securiti-privacy-banner') || document.querySelector('.securiti-banner-container');
+                if (banner) {
+                    banner.remove();
+                }
+            }
+
+            /**
+             * Loads and injects the Securiti.ai script with the specified locale.
+             * @param {string} localeCode - The language code (e.g., 'en', 'fr').
+             */
+            function loadSecuritiScript(localeCode) {
+                // 1. Clean up any script that might have been loaded before
+                cleanupPreviousScript();
+
+                // 2. Create the new script element
+                const s = document.createElement('script');
+                s.id = SCRIPT_ID;
+                s.src = 'https://cdn-prod.securiti.ai/consent/cookie-consent-sdk-loader.js';
+
+                // --- IMPORTANT: These are the values you provided ---
+                s.setAttribute('data-tenant-uuid', 'f84be4f0-e65e-40d3-af64-f6f4ae7b602f');
+                s.setAttribute('data-domain-uuid', '007d8ed5-ff5d-450a-acd7-e23ae3b9d20a');
+                // ------------------------------------
+
+                s.setAttribute('data-backend-url', 'https://app.securiti.ai');
+                s.setAttribute('data-skip-css', 'false');
+                s.defer = true;
+
+                // 3. Configure the language before the script loads
+                window.SecuritiDataLayer = window.SecuritiDataLayer || [];
+                SecuritiDataLayer.push([
+                    'beforeLoad',
+                    (bareSdk) => {
+                        console.log(`Setting Securiti.ai language to: ${localeCode}`);
+                        bareSdk.setLanguage(localeCode);
+                    }
+                ]);
+
+                // 4. Append the script to the head to start loading
+                document.head.appendChild(s);
+            }
+
+            // Load script when the selection changes
+            localeSelector.addEventListener('change', (event) => {
+                loadSecuritiScript(event.target.value);
+            });
+
+            // Load the initial script on page load with the default selected value
+            loadSecuritiScript(localeSelector.value);
+        });
+    </script>
 </head>
 <body class="bg-gray-50 text-gray-800">
 
@@ -55,76 +125,6 @@
         </main>
     </div>
 
-    <script>
-        const localeSelector = document.getElementById('locale-selector');
-        const SCRIPT_ID = 'securiti-script';
-
-        /**
-         * Cleans up any existing Securiti.ai script and banner elements from the DOM.
-         */
-        function cleanupPreviousScript() {
-            // Remove the script tag
-            const oldScript = document.getElementById(SCRIPT_ID);
-            if (oldScript) {
-                oldScript.remove();
-            }
-            // Securiti.ai often adds elements with specific IDs or classes.
-            // This is a generic way to find and remove the banner UI.
-            // You might need to inspect the generated banner to find a more specific selector.
-            const banner = document.getElementById('securiti-privacy-banner') || document.querySelector('.securiti-banner-container');
-             if (banner) {
-                banner.remove();
-            }
-        }
-
-        /**
-         * Loads and injects the Securiti.ai script with the specified locale.
-         * @param {string} localeCode - The language code (e.g., 'en', 'fr').
-         */
-        function loadSecuritiScript(localeCode) {
-            // 1. Clean up any script that might have been loaded before
-            cleanupPreviousScript();
-
-            // 2. Create the new script element
-            const s = document.createElement('script');
-            s.id = SCRIPT_ID;
-            s.src = 'https://cdn-prod.securiti.ai/consent/cookie-consent-sdk-loader.js';
-            
-            // --- IMPORTANT: REPLACE THESE VALUES ---
-            s.setAttribute('data-tenant-uuid', 'f84be4f0-e65e-40d3-af64-f6f4ae7b602f');
-            s.setAttribute('data-domain-uuid', '007d8ed5-ff5d-450a-acd7-e23ae3b9d20a');
-            // ------------------------------------
-
-            s.setAttribute('data-backend-url', 'https://app.securiti.ai');
-            s.setAttribute('data-skip-css', 'false');
-            s.defer = true;
-
-            // 3. Configure the language before the script loads
-            window.SecuritiDataLayer = window.SecuritiDataLayer || [];
-            SecuritiDataLayer.push([
-                'beforeLoad',
-                (bareSdk) => {
-                    console.log(`Setting Securiti.ai language to: ${localeCode}`);
-                    bareSdk.setLanguage(localeCode);
-                }
-            ]);
-
-            // 4. Append the script to the head to start loading
-            document.head.appendChild(s);
-        }
-
-        // --- Event Listeners ---
-
-        // Load script when the selection changes
-        localeSelector.addEventListener('change', (event) => {
-            loadSecuritiScript(event.target.value);
-        });
-
-        // Load the initial script on page load with the default selected value
-        window.addEventListener('load', () => {
-            loadSecuritiScript(localeSelector.value);
-        });
-    </script>
-
 </body>
 </html>
+
