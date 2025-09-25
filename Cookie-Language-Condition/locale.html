@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Securiti.ai Locale Tester</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Simple transition for better user experience */
+        .securiti-container {
+            transition: opacity 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-4xl">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900">Securiti.ai Cookie Consent Tester</h1>
+            <p class="text-gray-600 mt-2">Use the dropdown below to load the consent banner with different locales.</p>
+        </header>
+
+        <!-- IMPORTANT: User instructions -->
+        <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-4 rounded-md mb-8 shadow-sm" role="alert">
+            <h2 class="font-bold">Action Required!</h2>
+            <p>For this test to work, you must replace <code class="bg-yellow-200 px-1 rounded">'YOUR_TENANT_UUID'</code> and <code class="bg-yellow-200 px-1 rounded">'YOUR_DOMAIN_UUID'</code> in the script block of this HTML file with your actual credentials from Securiti.ai.</p>
+        </div>
+
+        <!-- Locale Selector -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
+            <label for="locale-selector" class="text-lg font-medium">Select a Language:</label>
+            <select id="locale-selector" class="block w-full sm:w-auto px-4 py-2 text-base text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                <option value="en">English (en)</option>
+                <option value="fr" selected>French (fr)</option>
+                <option value="es">Spanish (es)</option>
+                <option value="de">German (de)</option>
+                <option value="it">Italian (it)</option>
+                <option value="ja">Japanese (ja)</option>
+                <option value="ko">Korean (ko)</option>
+                <option value="pt">Portuguese (pt)</option>
+                <option value="zh">Chinese (zh)</option>
+                 <option value="hi">Hindi (hi)</option>
+            </select>
+        </div>
+
+        <!-- Dummy Content -->
+        <main class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-2xl font-semibold mb-4">Sample Page Content</h2>
+            <p class="mb-4">This is a sample area for the webpage content. When you select a new language from the dropdown, the Securiti.ai script will be reloaded with the new locale setting, and you should see the cookie consent banner appear in the chosen language (if it hasn't been dismissed already).</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed doeiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+        </main>
+    </div>
+
+    <script>
+        const localeSelector = document.getElementById('locale-selector');
+        const SCRIPT_ID = 'securiti-script';
+
+        /**
+         * Cleans up any existing Securiti.ai script and banner elements from the DOM.
+         */
+        function cleanupPreviousScript() {
+            // Remove the script tag
+            const oldScript = document.getElementById(SCRIPT_ID);
+            if (oldScript) {
+                oldScript.remove();
+            }
+            // Securiti.ai often adds elements with specific IDs or classes.
+            // This is a generic way to find and remove the banner UI.
+            // You might need to inspect the generated banner to find a more specific selector.
+            const banner = document.getElementById('securiti-privacy-banner') || document.querySelector('.securiti-banner-container');
+             if (banner) {
+                banner.remove();
+            }
+        }
+
+        /**
+         * Loads and injects the Securiti.ai script with the specified locale.
+         * @param {string} localeCode - The language code (e.g., 'en', 'fr').
+         */
+        function loadSecuritiScript(localeCode) {
+            // 1. Clean up any script that might have been loaded before
+            cleanupPreviousScript();
+
+            // 2. Create the new script element
+            const s = document.createElement('script');
+            s.id = SCRIPT_ID;
+            s.src = 'https://cdn-prod.securiti.ai/consent/cookie-consent-sdk-loader.js';
+            
+            // --- IMPORTANT: REPLACE THESE VALUES ---
+            s.setAttribute('data-tenant-uuid', 'f84be4f0-e65e-40d3-af64-f6f4ae7b602f');
+            s.setAttribute('data-domain-uuid', '007d8ed5-ff5d-450a-acd7-e23ae3b9d20a');
+            // ------------------------------------
+
+            s.setAttribute('data-backend-url', 'https://app.securiti.ai');
+            s.setAttribute('data-skip-css', 'false');
+            s.defer = true;
+
+            // 3. Configure the language before the script loads
+            window.SecuritiDataLayer = window.SecuritiDataLayer || [];
+            SecuritiDataLayer.push([
+                'beforeLoad',
+                (bareSdk) => {
+                    console.log(`Setting Securiti.ai language to: ${localeCode}`);
+                    bareSdk.setLanguage(localeCode);
+                }
+            ]);
+
+            // 4. Append the script to the head to start loading
+            document.head.appendChild(s);
+        }
+
+        // --- Event Listeners ---
+
+        // Load script when the selection changes
+        localeSelector.addEventListener('change', (event) => {
+            loadSecuritiScript(event.target.value);
+        });
+
+        // Load the initial script on page load with the default selected value
+        window.addEventListener('load', () => {
+            loadSecuritiScript(localeSelector.value);
+        });
+    </script>
+
+</body>
+</html>
