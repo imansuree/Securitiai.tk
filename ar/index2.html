@@ -12,19 +12,13 @@
 	s.setAttribute('data-securiti-staging-mode', 'true');
 	s.setAttribute('data-skip-css', 'false');
 	s.defer = true;
-        
-        s.addEventListener('load', function() {
-            var path = window.location.pathname.toLowerCase(); 
-            var lang = 'en';
-            if (path.indexOf('/ar/') !== -1 || path.endsWith('/ar')) {
-                lang = 'ar';
-            }
-            window.setConsentBannerParams({
-                overrideBannerLanguage: lang
-            });
-            console.log('Consent Banner Loaded with Language:', lang, 'using path:', path);
-        });
-
+    window.setConsentBannerParams(
+  {    uuid: <unique_id>,
+       overrideBannerLanguage: {
+          'https://imansuree.github.io/Securitiai.tk/ar/': 'ar',
+		 'https://imansuree.github.io/Securitiai.tk/ar': 'ar',
+          'https://imansuree.github.io/Securitiai.tk/en/index2.html': 'en'
+  }
         var parent_node = document.head || document.body;
         parent_node.appendChild(s);
     })();
