@@ -12,17 +12,26 @@
 	s.setAttribute('data-securiti-staging-mode', 'true');
 	s.setAttribute('data-skip-css', 'false');
 	s.defer = true;
-    window.setConsentBannerParams(
-  {   
-       overrideBannerLanguage: {
-          'https://imansuree.github.io/Securitiai.tk/ar/': 'ar',
-		 'https://imansuree.github.io/Securitiai.tk/ar': 'ar',
-		   'https://imansuree.github.io/Securitiai.tk/ar/index2.html': 'ar',
-          'https://imansuree.github.io/Securitiai.tk/en/index2.html': 'en'
-  }})
-        var parent_node = document.head || document.body;
-        parent_node.appendChild(s);
-    })();
+    
+    // ERROR FIX: The setConsentBannerParams call MUST be inside the 'load' listener.
+    s.addEventListener('load', function() {
+        window.setConsentBannerParams(
+        {	
+            overrideBannerLanguage: {
+                // Preserving your original URL keys, including redundant ones, as requested:
+                'https://imansuree.github.io/Securitiai.tk/ar/': 'ar',
+                'https://imansuree.github.io/Securitiai.tk/ar': 'ar',
+                'https://imansuree.github.io/Securitiai.tk/ar/index2.html': 'ar',
+                'https://imansuree.github.io/Securitiai.tk/en/index2.html': 'en',
+            }
+        });
+        // Optional: Add a console log to confirm parameters were set
+        console.log('Securiti consent parameters set after SDK loaded.');
+    });
+    
+	var parent_node = document.head || document.body;
+	parent_node.appendChild(s);
+})(); // ERROR FIX: Corrected the IIFE closing syntax.
 </script>
     
     <meta charset="UTF-8">
