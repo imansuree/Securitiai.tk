@@ -12,31 +12,21 @@
         s.setAttribute('data-securiti-staging-mode', 'true');
         s.setAttribute('data-skip-css', 'false');
         s.defer = true;
-        
         s.addEventListener('load', function() {
-            // Define the language map based on the window.location.pathname
-            var languageOverrides = {
-                '/Securitiai.tk/ar/': 'ar', 
-                '/Securitiai.tk/en/': 'en'
-                // Add other paths/languages here as needed
-            };
-            
-            // Use window.location.pathname for a reliable lookup 
-            var path = window.location.pathname;
-            var lang = languageOverrides[path] || 'en'; // Defaults to 'en' if no match
-            
-            // Set the banner language using the detected language code
-            window.setConsentBannerParams({
-                overrideBannerLanguage: lang
-            });
-            console.log('Consent Banner Loaded with Language:', lang, 'using path:', path);
+        window.setConsentBannerParams(
+        {   
+            overrideBannerLanguage: {             
+                '/ar': 'ar',
+                '/en': 'en',
+            }
         });
-
-        var parent_node = document.head || document.body;
-        parent_node.appendChild(s);
-    })();
-</script>
+        console.log('Securiti consent parameters set after SDK loaded.');
+    });
     
+    var parent_node = document.head || document.body;
+    parent_node.appendChild(s);
+})(); 
+</script>    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Simple Webpage</title>
