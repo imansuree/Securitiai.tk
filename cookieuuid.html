@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Amazing Jumbo Circus</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Securiti SDK Scripts -->
+ 
+<!-- After adding this script, call setConsentBannerParams({uuid: <unique id> }) to set unique ID for a customer.  -->
+<script>
+(function () {
+	var s = document.createElement('script');
+	s.src = 'https://cdn-prod.securiti.ai/consent/cookie-consent-sdk-loader.js';
+	s.setAttribute('data-tenant-uuid', 'f84be4f0-e65e-40d3-af64-f6f4ae7b602f');
+	s.setAttribute('data-domain-uuid', '007d8ed5-ff5d-450a-acd7-e23ae3b9d20a');
+	s.setAttribute('data-backend-url', 'https://app.securiti.ai');
+	s.setAttribute('data-skip-css', 'false');
+	s.defer = true;
+  window.SecuritiDataLayer = window.SecuritiDataLayer || [];
+SecuritiDataLayer.push([
+    'beforeLoad',
+    (bareSdk) => {
+        console.log('Cookie UUID:', bareSdk.getUuid());
+    }
+]);
+  
+	var parent_node = document.head || document.body;
+	parent_node.appendChild(s);
+})()
+</script>
+    <script
+      type="text/javascript"
+      src="https://cdn-prod.securiti.ai/consent/auto_blocking/f84be4f0-e65e-40d3-af64-f6f4ae7b602f/007d8ed5-ff5d-450a-acd7-e23ae3b9d20a.js"
+    ></script>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+        .lobster-font {
+            font-family: 'Lobster', cursive;
+        }
+        .hero-bg {
+            background-image: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1518709594023-63ab72722686?q=80&w=1740&auto-format&fit=crop');
+            background-size: cover;
+            background-position: center;
+        }
+        .striped-bg {
+            background-image: repeating-linear-gradient(
+                45deg,
+                rgba(255, 255, 255, 0.8),
+                rgba(255, 255, 255, 0.8) 20px,
+                rgba(253, 224, 71, 0.7) 20px,
+                rgba(253, 224, 71, 0.7) 40px
+            );
+        }
+    </style>
+</head>
+<body class="bg-red-50">
+
+    <!-- Header -->
+    <header class="bg-blue-800 text-white shadow-lg sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="lobster-font text-3xl text-yellow-300">Jumbo Circus</a>
+            <div class="hidden md:flex space-x-8">
+                <a href="#about" class="hover:text-yellow-300 transition duration-300">About Us</a>
+                <a href="#acts" class="hover:text-yellow-300 transition duration-300">Our Acts</a>
+                <a href="#gallery" class="hover:text-yellow-300 transition duration-300">Gallery</a>
+                <a href="#tickets" class="hover:text-yellow-300 transition duration-300">Tickets</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden flex items-center">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </nav>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden">
+            <a href="#about" class="block py-2 px-4 text-sm hover:bg-blue-700">About Us</a>
+            <a href="#acts" class="block py-2 px-4 text-sm hover:bg-blue-700">Our Acts</a>
+            <a href="#gallery" class="block py-2 px-4 text-sm hover:bg-blue-700">Gallery</a>
+            <a href="#tickets" class="block py-2 px-4 text-sm hover:bg-blue-700">Tickets</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-bg text-white h-[600px] flex items-center justify-center">
+        <div class="text-center">
+            <h1 class="lobster-font text-5xl md:text-8xl drop-shadow-lg">Experience the Magic!</h1>
+            <p class="mt-4 text-xl md:text-2xl font-light max-w-2xl mx-auto">Join us for a night of wonder, laughter, and breathtaking performances under the big top!</p>
+            <a href="#tickets" class="mt-8 inline-block bg-yellow-400 text-blue-900 font-bold py-4 px-10 rounded-full text-lg hover:bg-yellow-300 transition duration-300 transform hover:scale-105 shadow-xl">Book Tickets Now!</a>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about" class="py-20 bg-white">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="lobster-font text-5xl text-red-600 mb-6">Welcome to the Family</h2>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-8">
+                <img src="https://images.unsplash.com/photo-1504913258112-a705154b415a?q=80&w=1740&auto=format&fit=crop" alt="Circus performers posing together" class="rounded-full shadow-lg w-64 h-64 md:w-80 md:h-80 object-cover transform hover:rotate-3 transition duration-500">
+                <p class="max-w-2xl text-gray-700 leading-relaxed text-left">
+                    For over 50 years, the Jumbo Circus has been delighting audiences of all ages with our dazzling blend of traditional circus artistry and modern theatrical performance. Our international troupe of performers is a family, dedicated to creating unforgettable memories for your family. From our humble beginnings to the grand spectacle we are today, our mission has always been the same: to spread joy and wonder wherever we go.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Acts Section -->
+    <section id="acts" class="py-20 striped-bg">
+        <div class="container mx-auto px-6">
+            <h2 class="lobster-font text-5xl text-center text-blue-800 mb-12">World-Class Performers</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                <!-- Act Card 1 -->
+                <div class="bg-white rounded-lg shadow-xl overflow-hidden transform hover:-translate-y-2 transition duration-300">
+                    <img src="https://images.unsplash.com/photo-1543881473-2b23a78531a7?q=80&w=1742&auto=format&fit=crop" class="w-full h-56 object-cover" alt="Acrobats performing">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-red-600 mb-2">The Flying Fantastics</h3>
+                        <p class="text-gray-600">Prepare to be amazed as our high-flying acrobats perform death-defying stunts and graceful aerial ballets high above the ring.</p>
+                    </div>
+                </div>
+                <!-- Act Card 2 -->
+                <div class="bg-white rounded-lg shadow-xl overflow-hidden transform hover:-translate-y-2 transition duration-300">
+                    <img src="https://images.unsplash.com/photo-1596700204558-6a053f3a8b79?q=80&w=1740&auto=format&fit=crop" class="w-full h-56 object-cover" alt="Clowns juggling">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-yellow-600 mb-2">Giggles & Co.</h3>
+                        <p class="text-gray-600">Get ready to laugh out loud! Our hilarious clowns bring a delightful mix of classic comedy, silly antics, and charming chaos.</p>
+                    </div>
+                </div>
+                <!-- Act Card 3 -->
+                <div class="bg-white rounded-lg shadow-xl overflow-hidden transform hover:-translate-y-2 transition duration-300">
+                    <img src="https://images.unsplash.com/photo-1522881451255-f5e278a831f2?q=80&w=1740&auto=format&fit=crop" class="w-full h-56 object-cover" alt="Magician on stage">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-green-600 mb-2">Mysteria the Magnificent</h3>
+                        <p class="text-gray-600">Can you believe your eyes? Mysteria will enchant you with mind-bending illusions, incredible sleight of hand, and a touch of magic.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-20 bg-blue-50">
+        <div class="container mx-auto px-6">
+            <h2 class="lobster-font text-5xl text-center text-red-600 mb-12">Moments of Wonder</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="overflow-hidden rounded-lg shadow-md">
+                    <img src="https://images.unsplash.com/photo-1549472301-48784323e028?q=80&w=1287&auto=format&fit=crop" alt="Circus show moment 1" class="h-full w-full object-cover transform hover:scale-110 transition duration-500">
+                </div>
+                <div class="overflow-hidden rounded-lg shadow-md">
+                    <img src="https://images.unsplash.com/photo-1620822763299-4367c3857997?q=80&w=1287&auto=format&fit=crop" alt="Circus show moment 2" class="h-full w-full object-cover transform hover:scale-110 transition duration-500">
+                </div>
+                <div class="overflow-hidden rounded-lg shadow-md">
+                    <img src="https://images.unsplash.com/photo-1558282839-227038c11e49?q=80&w=1287&auto=format&fit=crop" alt="Circus show moment 3" class="h-full w-full object-cover transform hover:scale-110 transition duration-500">
+                </div>
+                <div class="overflow-hidden rounded-lg shadow-md">
+                    <img src="https://images.unsplash.com/photo-1563836109317-a41639c4a8a6?q=80&w=1287&auto=format&fit=crop" alt="Circus show moment 4" class="h-full w-full object-cover transform hover:scale-110 transition duration-500">
+                </div>
+                 <div class="overflow-hidden rounded-lg shadow-md col-span-2">
+                    <img src="https://images.unsplash.com/photo-1533312111-67398b18a1a3?q=80&w=1740&auto=format&fit=crop" alt="Circus show moment 5" class="h-full w-full object-cover transform hover:scale-110 transition duration-500">
+                </div>
+                 <div class="overflow-hidden rounded-lg shadow-md">
+                    <img src="https://images.unsplash.com/photo-1550293183-ac0d3f27f0e3?q=80&w=1287&auto=format&fit=crop" alt="Circus show moment 6" class="h-full w-full object-cover transform hover:scale-110 transition duration-500">
+                </div>
+                 <div class="overflow-hidden rounded-lg shadow-md">
+                    <img src="https://images.unsplash.com/photo-1618318224376-2391307b068a?q=80&w=1287&auto=format&fit=crop" alt="Circus show moment 7" class="h-full w-full object-cover transform hover:scale-110 transition duration-500">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tickets Section -->
+    <section id="tickets" class="py-20 bg-white">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="lobster-font text-5xl text-blue-800 mb-6">Don't Miss the Show!</h2>
+            <p class="max-w-2xl mx-auto text-gray-700 mb-10">We're coming to a town near you! Check our tour dates and book your tickets for an unforgettable experience.</p>
+            <div class="bg-blue-100 rounded-lg shadow-lg p-8 max-w-lg mx-auto">
+                <h3 class="text-2xl font-bold text-blue-900">Upcoming Show: Your Town</h3>
+                <p class="text-lg text-gray-600 mt-2">September 15-20, 2025</p>
+                <p class="text-gray-600">Grand Park Fairgrounds</p>
+                <a href="#" class="mt-6 inline-block bg-red-600 text-white font-bold py-3 px-8 rounded-full text-lg hover:bg-red-500 transition duration-300 transform hover:scale-105 shadow-lg">Buy Tickets</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-blue-900 text-white py-10">
+        <div class="container mx-auto px-6 text-center">
+            <p class="lobster-font text-3xl text-yellow-300 mb-4">Jumbo Circus</p>
+            <div class="flex justify-center space-x-6 mb-4">
+                <a href="#" class="hover:text-yellow-300">Facebook</a>
+                <a href="#" class="hover:text-yellow-300">Instagram</a>
+                <a href="#" class="hover:text-yellow-300">Twitter</a>
+            </div>
+            <p class="text-blue-200">&copy; 2025 The Amazing Jumbo Circus. All Rights Reserved.</p>
+            <div class="mt-4">
+                <a href="#" onclick="showConsentPreferencesPopup()" >Manage Your Cookies</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>
