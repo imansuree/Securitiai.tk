@@ -16,7 +16,12 @@
 	s.setAttribute('data-backend-url', 'https://app.securiti.ai');
 	s.setAttribute('data-skip-css', 'false');
 	s.defer = true;
-  window.SecuritiDataLayer = window.SecuritiDataLayer || [];
+	var parent_node = document.head || document.body;
+	parent_node.appendChild(s);
+})()
+</script>
+	<script>
+		 window.SecuritiDataLayer = window.SecuritiDataLayer || [];
 SecuritiDataLayer.push([
     'beforeLoad',
     (bareSdk) => {
@@ -24,10 +29,7 @@ SecuritiDataLayer.push([
     }
 ]);
   
-	var parent_node = document.head || document.body;
-	parent_node.appendChild(s);
-})()
-</script>
+	</script>
     <script
       type="text/javascript"
       src="https://cdn-prod.securiti.ai/consent/auto_blocking/f84be4f0-e65e-40d3-af64-f6f4ae7b602f/007d8ed5-ff5d-450a-acd7-e23ae3b9d20a.js"
