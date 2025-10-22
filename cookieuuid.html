@@ -16,20 +16,22 @@
 	s.setAttribute('data-backend-url', 'https://app.securiti.ai');
 	s.setAttribute('data-skip-css', 'false');
 	s.defer = true;
+	// Initialize the data layer array
+    window.SecuritiDataLayer = window.SecuritiDataLayer || [];
+    
+    // Push the 'beforeLoad' event listener to the data layer
+    SecuritiDataLayer.push([
+        'beforeLoad',
+        (bareSdk) => {
+            // bareSdk object is available here, use getUuid() to print the UUID
+            const uuid = bareSdk.getUuid();
+            console.log('Securiti Cookie UUID:', uuid);
+        }
+    ]);
 	var parent_node = document.head || document.body;
 	parent_node.appendChild(s);
 })()
 </script>
-	<script>
-		 window.SecuritiDataLayer = window.SecuritiDataLayer || [];
-SecuritiDataLayer.push([
-    'beforeLoad',
-    (bareSdk) => {
-        console.log('Cookie UUID:', bareSdk.getUuid());
-    }
-]);
-  
-	</script>
     <script
       type="text/javascript"
       src="https://cdn-prod.securiti.ai/consent/auto_blocking/f84be4f0-e65e-40d3-af64-f6f4ae7b602f/007d8ed5-ff5d-450a-acd7-e23ae3b9d20a.js"
